@@ -35,7 +35,7 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 | Milestone              | Goal                                                                                    | Status      |
 |------------------------|-----------------------------------------------------------------------------------------|-------------|
-| **M0 — Planning**      | Project vision, stack, hosting, and collaboration workflow defined.                     | in progress |
+| **M0 — Planning**      | Project vision, stack, hosting, and collaboration workflow defined.                     | done        |
 | **M1 — Foundation**    | Hello World deployed to production: one page, one button, one backend call. No database.| pending     |
 | **M2 — Core Loop**     | Log time with an attached person. View total time per person. Minimum viable product.   | pending     |
 | **M3 — User Management**| Admin persona creates and manages the caring person and their attached persons.        | pending     |
@@ -49,4 +49,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M0 in progress — planning and setup phase.
+M0 complete — starting M1 (Foundation).

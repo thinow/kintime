@@ -34,13 +34,13 @@ Use these names in examples, tests, seed data, and documentation.
 
 | Milestone                     | Status      |
 |-------------------------------|-------------|
-| M0 — Planning & Setup         | in progress |
+| M0 — Planning & Setup         | done        |
 | M1 — Foundation (Hello World) | pending     |
 | M2 — Core Loop                | pending     |
 | M3 — User Management          | pending     |
 | M4 — UX Polish                | pending     |
 
-### M0 — Planning & Setup `in progress`
+### M0 — Planning & Setup `done`
 Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
 
 - Project vision and personas documented
