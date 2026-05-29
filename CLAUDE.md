@@ -97,3 +97,5 @@ Always prefer a thin vertical slice that works end-to-end over a broad horizonta
 During implementation, be challenging: push back on proposals that are over-engineered, poorly named, or where a simpler design would serve the use case better. Kintime is a personal-scale app — avoid enterprise patterns that don't earn their complexity here.
 
 Apply YAGNI rigorously. Before implementing anything, check whether it is actually required for the current milestone. If a proposal exceeds the current scope, say so explicitly and defer it. "We'll need it later" is not a reason to build it now.
+
+When starting a new milestone, break it into iterations that each fit within one hour of working time. Each iteration must produce something deployable — a real, visible change in production. This is the unit of progress: one spare-time session, one shipped increment.
