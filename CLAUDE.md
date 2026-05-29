@@ -35,10 +35,12 @@ Use these names in examples, tests, seed data, and documentation.
 | Milestone                     | Status      |
 |-------------------------------|-------------|
 | M0 — Planning & Setup         | done        |
-| M1 — Foundation (Hello World) | pending     |
-| M2 — Core Loop                | pending     |
-| M3 — User Management          | pending     |
-| M4 — UX Polish                | pending     |
+| M1 — Walking Skeleton         | pending     |
+| M2 — Homer sets up his family | pending     |
+| M3 — Homer logs time          | pending     |
+| M4 — Homer sees balance       | pending     |
+| M5 — Homer notices imbalance  | pending     |
+| M6 — Homer logs in            | pending     |
 
 ### M0 — Planning & Setup `done`
 Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
@@ -50,28 +52,47 @@ Define the project vision, stack, hosting strategy, collaboration workflow, and 
 - Branching strategy: push directly to `main` — no feature branches; tests are the safety net
 - Repository structure and `.gitignore` in place
 
-### M1 — Hello World (Foundation)
-A deployable skeleton: one frontend page with a button that calls the backend, backend returns a response. No database. Goal is to validate the full stack is wired end-to-end and deployed to production.
+### M1 — Walking Skeleton
+A deployable skeleton: Homer opens Kintime and sees a working page that talks to the backend. No domain features yet — placeholder content. The one honest exception to "use-case driven": this milestone validates that the deployed stack works end-to-end before any product value is shipped.
 
 - Frontend and backend deployed and reachable in production
+- A page loads, makes a backend call, displays the response
 - No staging environment — production is the only deployed environment
 - Automated tests runnable both locally and in CI/CD (GitHub Actions)
 
-### M2 — Core Loop (Bare Minimum Use Case)
-The app does the one thing it exists to do: log time spent with an attached person, and display the total time per person.
+### M2 — Homer sets up his family
+Homer creates and edits his attached persons (Bart, Lisa, Maggie). The first real domain data lands here.
 
-- Log a time entry (person + duration)
-- View cumulative time per person
-- Backed by a database
+- A form to add an attached person (name)
+- Edit and remove existing persons
+- Entries persist (PostgreSQL on Neon arrives here)
+- No authentication yet — added in M6
 
-### M3 — User Management (Admin Setup)
-An Admin persona can configure the system: create the caring person (e.g. Homer) and their attached persons (e.g. Bart, Lisa, Maggie).
+### M3 — Homer logs time
+Homer logs time spent with one of his attached persons.
 
-- Admin creates and manages personas
-- Authentication distinguishing Admin from regular user
+- A time entry can be logged (attached person + duration + timestamp)
+- The attached person is picked from those Homer set up in M2
 
-### M4 — UX Polish
-Refine flows and experience based on real usage of M2/M3.
+### M4 — Homer sees balance
+Homer sees how his time has been distributed across attached persons.
+
+- A view shows cumulative time per attached person
+- Computed from logged entries
+
+### M5 — Homer notices imbalance
+Homer is gently surfaced when his time has drifted toward one attached person. This is the core product vision — "spot imbalances before they become patterns."
+
+- A visual cue, summary, or notification surfaces imbalance
+- Threshold and tone calibrated to feel honest, not guilt-tripping
+- Flows refined based on real usage from M2-M4
+
+### M6 — Homer logs in
+Authentication gates the app so Homer's data stays private. Until now the app has been deployed but accessible to anyone with the URL — fine for personal testing, not for sustained real use.
+
+- Homer signs in to access his data
+- Without a session, no data is visible
+- Sessions persist across reloads
 
 ## Repository Structure
 

@@ -35,13 +35,15 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Roadmap
 
-| Milestone              | Goal                                                                                    | Status      |
-|------------------------|-----------------------------------------------------------------------------------------|-------------|
-| **M0 — Planning**      | Project vision, stack, hosting, and collaboration workflow defined.                     | done        |
-| **M1 — Foundation**    | Hello World deployed to production: one page, one button, one backend call. No database.| pending     |
-| **M2 — Core Loop**     | Log time with an attached person. View total time per person. Minimum viable product.   | pending     |
-| **M3 — User Management**| Admin persona creates and manages the caring person and their attached persons.        | pending     |
-| **M4 — UX Polish**     | Refine flows and experience based on real usage.                                        | pending     |
+| Milestone                         | Goal                                                                | Status      |
+|-----------------------------------|---------------------------------------------------------------------|-------------|
+| **M0 — Planning**                 | Project vision, stack, hosting, and collaboration workflow defined. | done        |
+| **M1 — Walking Skeleton**         | A working page talks to the backend in production. No domain yet.   | pending     |
+| **M2 — Homer sets up his family** | Create and edit attached persons (Bart, Lisa, Maggie). No auth yet. | pending     |
+| **M3 — Homer logs time**          | Log a time entry with one of the attached persons from M2.          | pending     |
+| **M4 — Homer sees balance**       | View cumulative time per attached person.                           | pending     |
+| **M5 — Homer notices imbalance**  | Gentle awareness when time has drifted toward one person.           | pending     |
+| **M6 — Homer logs in**            | Authentication gates the app so personal data stays private.        | pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 
@@ -51,4 +53,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M0 complete — starting M1 (Foundation).
+M0 complete — starting M1 (Walking Skeleton).
