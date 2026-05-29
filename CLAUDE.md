@@ -71,6 +71,33 @@ An Admin persona can configure the system: create the caring person (e.g. Homer)
 ### M4 — UX Polish
 Refine flows and experience based on real usage of M2/M3.
 
+## Repository Structure
+
+```
+kintime/
+├── frontend/                  # React app (Cloudflare Pages)
+│   ├── src/
+│   │   ├── components/
+│   │   └── pages/
+│   └── package.json
+├── backend/                   # FastAPI app (Fly.io)
+│   ├── app/
+│   │   ├── main.py            # FastAPI entry point
+│   │   └── routers/           # one file per feature area
+│   ├── tests/
+│   ├── Dockerfile             # Fly.io deployment
+│   ├── fly.toml               # Fly.io config
+│   ├── pyproject.toml         # uv project file
+│   └── uv.lock                # committed lockfile
+├── .github/
+│   └── workflows/
+│       └── deploy.yml         # test + deploy backend + run migrations
+├── .claude/
+├── CLAUDE.md
+├── README.md
+└── LICENSE
+```
+
 ## Formatting
 
 Keep Markdown table columns pipe-aligned: pad cells with spaces so the `|` characters form straight vertical lines across all rows, including the separator row.
