@@ -40,7 +40,8 @@ Use these names in examples, tests, seed data, and documentation.
 | M3 — Homer logs time          | pending     |
 | M4 — Homer sees balance       | pending     |
 | M5 — Homer notices imbalance  | pending     |
-| M6 — Homer logs in            | pending     |
+| M6 — Guest tries the demo     | pending     |
+| M7 — Homer logs in            | pending     |
 
 ### M0 — Planning & Setup `done`
 Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
@@ -87,11 +88,18 @@ Homer is gently surfaced when his time has drifted toward one attached person. T
 - Threshold and tone calibrated to feel honest, not guilt-tripping
 - Flows refined based on real usage from M2-M4
 
-### M6 — Homer logs in
-Authentication gates the app so Homer's data stays private. Until now the app has been deployed but accessible to anyone with the URL — fine for personal testing, not for sustained real use.
+### M6 — Guest tries the demo
+A visitor walks through the full product loop on sandboxed fake data: set up a family, log time, see balance, notice imbalance. Provides a public surface that shows what Kintime does without exposing Homer's real records.
+
+- A `/demo` route runs the same UI against sandboxed data
+- Demo state resets per session (likely `localStorage`-backed — backend untouched)
+- Real and demo data realms stay isolated
+
+### M7 — Homer logs in
+Authentication gates Homer's real data. From this point on, the public surface is the M6 demo; Homer's private app sits behind login.
 
 - Homer signs in to access his data
-- Without a session, no data is visible
+- Without a session, only the demo is reachable
 - Sessions persist across reloads
 
 ## Repository Structure

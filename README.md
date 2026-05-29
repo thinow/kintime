@@ -43,7 +43,8 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M3 — Homer logs time**          | Log a time entry with one of the attached persons from M2.          | pending     |
 | **M4 — Homer sees balance**       | View cumulative time per attached person.                           | pending     |
 | **M5 — Homer notices imbalance**  | Gentle awareness when time has drifted toward one person.           | pending     |
-| **M6 — Homer logs in**            | Authentication gates the app so personal data stays private.        | pending     |
+| **M6 — Guest tries the demo**     | A public, sandboxed walkthrough of the product loop with fake data. | pending     |
+| **M7 — Homer logs in**            | Authentication gates the app so personal data stays private.        | pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 
