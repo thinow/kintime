@@ -17,12 +17,14 @@ Homer has three kids: Bart, Lisa, and Maggie. He loves them equally but life get
 
 ## Stack
 
-| Layer    | Technology               |
-|----------|--------------------------|
-| Frontend | React (web, mobile-first)|
-| Backend  | Java / Spring Boot       |
-| Hosting  | Free-tier cloud (TBD)    |
-| Database | PostgreSQL (TBD)         |
+| Layer            | Technology                |
+|------------------|---------------------------|
+| Frontend         | React (web, mobile-first) |
+| Backend          | Python / FastAPI          |
+| Frontend hosting | Cloudflare Pages          |
+| Backend hosting  | Fly.io                    |
+| Database         | Neon (PostgreSQL)         |
+| CI/CD            | GitHub Actions            |
 
 ## About This Project
 

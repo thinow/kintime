@@ -19,15 +19,16 @@ Use these names in examples, tests, seed data, and documentation.
 
 ## Planned Stack
 
-| Layer     | Technology          | Notes                                      |
-|-----------|---------------------|--------------------------------------------|
-| Frontend  | React (web, mobile-first) | Browser-based, no app store required  |
-| Backend   | Java (Spring Boot)  | REST API                                   |
-| Hosting   | TBD — free tier     | Single user initially; Railway/Render/Fly.io candidates |
-| Database  | TBD — free tier     | Likely PostgreSQL (Neon/Supabase/Render)   |
-| CI/CD     | GitHub Actions      |                                            |
+| Layer            | Technology               | Notes                                     |
+|------------------|--------------------------|-------------------------------------------|
+| Frontend         | React (web, mobile-first)| Browser-based, no app store required      |
+| Backend          | Python (FastAPI)         | REST API                                  |
+| Frontend hosting | Cloudflare Pages         | CDN-served, no cold start, free           |
+| Backend hosting  | Fly.io                   | Always-on free VM, no enforced sleep      |
+| Database         | Neon (PostgreSQL)        | Serverless Postgres, free tier            |
+| CI/CD            | GitHub Actions           | Deploys backend to Fly.io, runs migrations|
 
-> Stack decisions are not final. Challenge proposals if a simpler or better-fit option exists.
+> Cloudflare Pages auto-deploys from GitHub — no Actions config needed for the frontend.
 
 ## Milestones
 
@@ -53,6 +54,10 @@ An Admin persona can configure the system: create the caring person (e.g. Homer)
 
 ### M4 — UX Polish
 Refine flows and experience based on real usage of M2/M3.
+
+## Formatting
+
+Keep Markdown table columns pipe-aligned: pad cells with spaces so the `|` characters form straight vertical lines across all rows, including the separator row.
 
 ## Commit Messages
 
