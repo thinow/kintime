@@ -33,15 +33,16 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Roadmap
 
-| Milestone | Goal |
-|-----------|------|
-| **M1 — Foundation** | Hello World deployed to production: one page, one button, one backend call. No database. Full CI/CD pipeline in place. |
-| **M2 — Core Loop** | Log time with an attached person. View total time per person. Minimum viable product. |
-| **M3 — User Management** | Admin persona creates and manages the caring person and their attached persons. |
-| **M4 — UX Polish** | Refine flows and experience based on real usage. |
+| Milestone              | Goal                                                                                    | Status      |
+|------------------------|-----------------------------------------------------------------------------------------|-------------|
+| **M0 — Planning**      | Project vision, stack, hosting, and collaboration workflow defined.                     | in progress |
+| **M1 — Foundation**    | Hello World deployed to production: one page, one button, one backend call. No database.| pending     |
+| **M2 — Core Loop**     | Log time with an attached person. View total time per person. Minimum viable product.   | pending     |
+| **M3 — User Management**| Admin persona creates and manages the caring person and their attached persons.        | pending     |
+| **M4 — UX Polish**     | Refine flows and experience based on real usage.                                        | pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 
 ## Status
 
-Planning phase — stack and milestones defined, implementation not started.
+M0 in progress — planning and setup phase.

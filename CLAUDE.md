@@ -32,6 +32,22 @@ Use these names in examples, tests, seed data, and documentation.
 
 ## Milestones
 
+| Milestone                     | Status      |
+|-------------------------------|-------------|
+| M0 — Planning & Setup         | in progress |
+| M1 — Foundation (Hello World) | pending     |
+| M2 — Core Loop                | pending     |
+| M3 — User Management          | pending     |
+| M4 — UX Polish                | pending     |
+
+### M0 — Planning & Setup `in progress`
+Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
+
+- Project vision and personas documented
+- Stack decisions finalized
+- Milestones and iteration model defined
+- CI/CD and hosting strategy planned
+
 ### M1 — Hello World (Foundation)
 A deployable skeleton: one frontend page with a button that calls the backend, backend returns a response. No database. Goal is to validate the full stack is wired end-to-end and deployed to production.
 
@@ -79,3 +95,5 @@ Work in small, deliberate iterations. Each milestone must produce something real
 Always prefer a thin vertical slice that works end-to-end over a broad horizontal layer that delivers nothing runnable. A button that actually calls a real backend beats a perfectly structured codebase that does nothing yet.
 
 During implementation, be challenging: push back on proposals that are over-engineered, poorly named, or where a simpler design would serve the use case better. Kintime is a personal-scale app — avoid enterprise patterns that don't earn their complexity here.
+
+Apply YAGNI rigorously. Before implementing anything, check whether it is actually required for the current milestone. If a proposal exceeds the current scope, say so explicitly and defer it. "We'll need it later" is not a reason to build it now.
