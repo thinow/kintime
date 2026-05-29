@@ -47,6 +47,8 @@ Define the project vision, stack, hosting strategy, collaboration workflow, and 
 - Stack decisions finalized
 - Milestones and iteration model defined
 - CI/CD and hosting strategy planned
+- Branching strategy: push directly to `main` — no feature branches; tests are the safety net
+- Repository structure and `.gitignore` in place
 
 ### M1 — Hello World (Foundation)
 A deployable skeleton: one frontend page with a button that calls the backend, backend returns a response. No database. Goal is to validate the full stack is wired end-to-end and deployed to production.
