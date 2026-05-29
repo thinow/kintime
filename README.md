@@ -43,6 +43,10 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 > No staging environment. Tests run locally and in CI/CD.
 
+## License
+
+[MIT](LICENSE) — © 2026 Thierry Nowak
+
 ## Status
 
 M0 in progress — planning and setup phase.
