@@ -99,3 +99,5 @@ During implementation, be challenging: push back on proposals that are over-engi
 Apply YAGNI rigorously. Before implementing anything, check whether it is actually required for the current milestone. If a proposal exceeds the current scope, say so explicitly and defer it. "We'll need it later" is not a reason to build it now.
 
 When starting a new milestone, break it into iterations that each fit within one hour of working time. Each iteration must produce something deployable — a real, visible change in production. This is the unit of progress: one spare-time session, one shipped increment.
+
+When the same command or request repeats across sessions, suggest creating a Claude Skill to automate it rather than executing it manually again.
