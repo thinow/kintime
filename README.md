@@ -48,6 +48,17 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 > No staging environment. Tests run locally and in CI/CD.
 
+## Contributing
+
+**Commands** — invoke with `/command-name` in [Claude Code](https://claude.ai/code):
+
+| Command             | What it does                                                          |
+|---------------------|-----------------------------------------------------------------------|
+| `/ship`             | Review diff, propose a commit message, commit and push                |
+| `/start-milestone`  | Break a milestone into 1-hour deployable iterations                   |
+
+**Branching** — push directly to `main`. No feature branches. Tests are the safety net.
+
 ## License
 
 [MIT](LICENSE) — © 2026 Thierry Nowak
