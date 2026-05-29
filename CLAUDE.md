@@ -21,14 +21,14 @@ Use these names in examples, tests, seed data, and documentation.
 
 | Layer            | Technology               | Notes                                     |
 |------------------|--------------------------|-------------------------------------------|
-| Frontend         | React (web, mobile-first)| Browser-based, no app store required      |
+| Frontend         | Next.js (App Router)     | Mobile-first, browser-based, no app store |
 | Backend          | Python (FastAPI)         | REST API                                  |
-| Frontend hosting | Cloudflare Pages         | CDN-served, no cold start, free           |
+| Frontend hosting | Vercel                   | Native Next.js host, no cold start, free  |
 | Backend hosting  | Fly.io                   | Always-on free VM, no enforced sleep      |
 | Database         | Neon (PostgreSQL)        | Serverless Postgres, free tier            |
 | CI/CD            | GitHub Actions           | Deploys backend to Fly.io, runs migrations|
 
-> Cloudflare Pages auto-deploys from GitHub — no Actions config needed for the frontend.
+> Vercel auto-deploys from GitHub — no Actions config needed for the frontend.
 
 ## Milestones
 
@@ -77,10 +77,11 @@ Refine flows and experience based on real usage of M2/M3.
 
 ```
 kintime/
-├── frontend/                  # React app (Cloudflare Pages)
-│   ├── src/
-│   │   ├── components/
-│   │   └── pages/
+├── frontend/                  # Next.js app (Vercel)
+│   ├── app/                   # App Router: layouts and pages
+│   ├── components/
+│   ├── public/
+│   ├── next.config.mjs
 │   └── package.json
 ├── backend/                   # FastAPI app (Fly.io)
 │   ├── app/

@@ -19,12 +19,14 @@ Homer has three kids: Bart, Lisa, and Maggie. He loves them equally but life get
 
 | Layer            | Technology                |
 |------------------|---------------------------|
-| Frontend         | React (web, mobile-first) |
+| Frontend         | Next.js (App Router)      |
 | Backend          | Python / FastAPI          |
-| Frontend hosting | Cloudflare Pages          |
+| Frontend hosting | Vercel                    |
 | Backend hosting  | Fly.io                    |
 | Database         | Neon (PostgreSQL)         |
 | CI/CD            | GitHub Actions            |
+
+> Next.js gives us server-side rendering: pages arrive as pre-rendered HTML, so the first paint is fast on mobile data — no waiting for a JS bundle to hydrate before content shows.
 
 ## About This Project
 
