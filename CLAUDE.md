@@ -19,14 +19,15 @@ Use these names in examples, tests, seed data, and documentation.
 
 ## Planned Stack
 
-| Layer            | Technology               | Notes                                     |
-|------------------|--------------------------|-------------------------------------------|
-| Frontend         | Next.js (App Router)     | Mobile-first, browser-based, no app store |
-| Backend          | Python (FastAPI)         | REST API                                  |
-| Frontend hosting | Vercel                   | Native Next.js host, no cold start, free  |
-| Backend hosting  | Fly.io                   | Always-on free VM, no enforced sleep      |
-| Database         | Neon (PostgreSQL)        | Serverless Postgres, free tier            |
-| CI/CD            | GitHub Actions           | Deploys backend to Fly.io, runs migrations|
+| Layer            | Technology               | Notes                                      |
+|------------------|--------------------------|------------------------------------------  |
+| Frontend         | Next.js (App Router)     | Mobile-first, browser-based, no app store  |
+| Backend          | Python (FastAPI)         | REST API                                   |
+| Frontend hosting | Vercel                   | Native Next.js host, no cold start, free   |
+| Backend hosting  | Fly.io                   | Always-on free VM, no enforced sleep       |
+| Database         | Neon (PostgreSQL)        | Serverless Postgres, free tier             |
+| Email            | Resend                   | Magic link auth; 3,000 emails/month free   |
+| CI/CD            | GitHub Actions           | Deploys backend to Fly.io, runs migrations |
 
 > Vercel auto-deploys from GitHub — no Actions config needed for the frontend.
 
@@ -102,8 +103,12 @@ A visitor walks through the full product loop on sandboxed fake data: set up a f
 ### M7 — Homer logs in
 Authentication gates Homer's real data. From this point on, the public surface is the M6 demo; Homer's private app sits behind login.
 
-- Homer signs in to access his data
-- Without a session, only the demo is reachable
+Auth mechanism: **magic link** (passwordless). Homer enters his email, receives a link via Resend, clicks it, and gets a session. No passwords stored.
+
+- Homer enters his email → backend generates a single-use token (hashed, 1 hour TTL) and emails a login link via Resend
+- Homer clicks the link → token validated, session cookie set (HTTP-only, 1 month), token marked used
+- On first login, Homer is prompted to enter a display name (email remains the identifier)
+- Without a session, only the `/demo` route is reachable
 - Sessions persist across reloads
 
 ## Repository Structure
