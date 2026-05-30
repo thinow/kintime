@@ -17,14 +17,12 @@ Homer has three kids: Bart, Lisa, and Maggie. He loves them equally but life get
 
 ## Stack
 
-| Layer            | Technology                |
-|------------------|---------------------------|
-| Frontend         | Next.js (App Router)      |
-| Backend          | Python / FastAPI          |
-| Frontend hosting | Vercel                    |
-| Backend hosting  | Fly.io                    |
-| Database         | Neon (PostgreSQL)         |
-| CI/CD            | GitHub Actions            |
+| Layer    | Technology | Hosting |
+|----------|------------|---------|
+| Frontend | [![Next.js](https://img.shields.io/badge/Next.js-000?logo=nextdotjs&logoColor=white&style=flat-square)](https://nextjs.org) | [![Vercel](https://img.shields.io/badge/Vercel-000?logo=vercel&logoColor=white&style=flat-square)](https://vercel.com) |
+| Backend  | [![FastAPI](https://img.shields.io/badge/FastAPI-009688?logo=fastapi&logoColor=white&style=flat-square)](https://fastapi.tiangolo.com) | [![Fly.io](https://img.shields.io/badge/Fly.io-8B5CF6?logo=flydotio&logoColor=white&style=flat-square)](https://fly.io) |
+| Database | [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white&style=flat-square)](https://www.postgresql.org) | [![Neon](https://img.shields.io/badge/Neon-00E599?logo=neon&logoColor=000&style=flat-square)](https://neon.tech) |
+| CI/CD    | [![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?logo=githubactions&logoColor=white&style=flat-square)](https://github.com/features/actions) | — |
 
 > Next.js gives us server-side rendering: pages arrive as pre-rendered HTML, so the first paint is fast on mobile data — no waiting for a JS bundle to hydrate before content shows.
 
