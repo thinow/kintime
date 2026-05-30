@@ -10,10 +10,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 | Persona | Role |
 |---------|------|
-| Homer   | The user (parent tracking time) |
-| Bart    | Attached person (child) |
-| Lisa    | Attached person (child) |
-| Maggie  | Attached person (child) |
+| Pat     | The user (parent tracking time) |
+| Casey   | Attached person (child) |
+| Jamie   | Attached person (child) |
 
 Use these names in examples, tests, seed data, and documentation.
 
@@ -37,12 +36,11 @@ Use these names in examples, tests, seed data, and documentation.
 |-------------------------------|-------------|
 | M0 — Planning & Setup         | done        |
 | M1 — Walking Skeleton         | pending     |
-| M2 — Homer sets up his family | pending     |
-| M3 — Homer logs time          | pending     |
-| M4 — Homer sees balance       | pending     |
-| M5 — Homer notices imbalance  | pending     |
-| M6 — Guest tries the demo     | pending     |
-| M7 — Homer logs in            | pending     |
+| M2 — Pat sets up his family   | pending     |
+| M3 — Pat logs time            | pending     |
+| M4 — Pat sees balance         | pending     |
+| M5 — Pat notices imbalance    | pending     |
+| M6 — Pat logs in              | pending     |
 
 ### M0 — Planning & Setup `done`
 Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
@@ -55,7 +53,7 @@ Define the project vision, stack, hosting strategy, collaboration workflow, and 
 - Repository structure and `.gitignore` in place
 
 ### M1 — Walking Skeleton
-A deployable skeleton: Homer opens Kintime and sees a working page that talks to the backend. No domain features yet — placeholder content. The one honest exception to "use-case driven": this milestone validates that the deployed stack works end-to-end before any product value is shipped.
+A deployable skeleton: Pat opens Kintime and sees a working page that talks to the backend. No domain features yet — placeholder content. The one honest exception to "use-case driven": this milestone validates that the deployed stack works end-to-end before any product value is shipped.
 
 - Frontend and backend deployed and reachable in production
 - A page loads, makes a backend call, displays the response
@@ -66,48 +64,41 @@ A deployable skeleton: Homer opens Kintime and sees a working page that talks to
 - [ ] 2. Frontend scaffold — Next.js (App Router) page that calls `GET /health` on load and renders the server timestamp. Vercel project linked to GitHub, auto-deploys on push to `main`.
 - [ ] 3. CI/CD — GitHub Actions workflow: run backend tests, then deploy to Fly.io via `FLY_API_TOKEN` secret. Every push to `main` ships the backend automatically; tests are the gate.
 
-### M2 — Homer sets up his family
-Homer creates and edits his attached persons (Bart, Lisa, Maggie). The first real domain data lands here.
+### M2 — Pat sets up his family
+Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
 
 - A form to add an attached person (name)
 - Edit and remove existing persons
 - Entries persist (PostgreSQL on Neon arrives here)
 - No authentication yet — added in M6
 
-### M3 — Homer logs time
-Homer logs time spent with one of his attached persons.
+### M3 — Pat logs time
+Pat logs time spent with one of his attached persons.
 
 - A time entry can be logged (attached person + duration + timestamp)
-- The attached person is picked from those Homer set up in M2
+- The attached person is picked from those Pat set up in M2
 
-### M4 — Homer sees balance
-Homer sees how his time has been distributed across attached persons.
+### M4 — Pat sees balance
+Pat sees how his time has been distributed across attached persons.
 
 - A view shows cumulative time per attached person
 - Computed from logged entries
 
-### M5 — Homer notices imbalance
-Homer is gently surfaced when his time has drifted toward one attached person. This is the core product vision — "spot imbalances before they become patterns."
+### M5 — Pat notices imbalance
+Pat is gently surfaced when his time has drifted toward one attached person. This is the core product vision — "spot imbalances before they become patterns."
 
 - A visual cue, summary, or notification surfaces imbalance
 - Threshold and tone calibrated to feel honest, not guilt-tripping
 - Flows refined based on real usage from M2-M4
 
-### M6 — Guest tries the demo
-A visitor walks through the full product loop on sandboxed fake data: set up a family, log time, see balance, notice imbalance. Provides a public surface that shows what Kintime does without exposing Homer's real records.
+### M6 — Pat logs in
+Authentication gates Pat's real data. From this point on, the public surface is the M6 demo; Pat's private app sits behind login.
 
-- A `/demo` route runs the same UI against sandboxed data
-- Demo state resets per session (likely `localStorage`-backed — backend untouched)
-- Real and demo data realms stay isolated
+Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a link via Resend, clicks it, and gets a session. No passwords stored.
 
-### M7 — Homer logs in
-Authentication gates Homer's real data. From this point on, the public surface is the M6 demo; Homer's private app sits behind login.
-
-Auth mechanism: **magic link** (passwordless). Homer enters his email, receives a link via Resend, clicks it, and gets a session. No passwords stored.
-
-- Homer enters his email → backend generates a single-use token (hashed, 1 hour TTL) and emails a login link via Resend
-- Homer clicks the link → token validated, session cookie set (HTTP-only, 1 month), token marked used
-- On first login, Homer is prompted to enter a display name (email remains the identifier)
+- Pat enters his email → backend generates a single-use token (hashed, 1 hour TTL) and emails a login link via Resend
+- Pat clicks the link → token validated, session cookie set (HTTP-only, 1 month), token marked used
+- On first login, Pat is prompted to enter a display name (email remains the identifier)
 - Without a session, only the `/demo` route is reachable
 - Sessions persist across reloads
 
