@@ -129,6 +129,35 @@ kintime/
 └── LICENSE
 ```
 
+## Version Pinning
+
+Pin every external dependency to an exact version. Never use `latest`, floating tags, or open ranges where a lockfile or explicit pin can own it instead.
+
+| Layer           | How to pin                                                        |
+|-----------------|-------------------------------------------------------------------|
+| Docker images   | Exact tag: `python:3.14.5-slim`, `ghcr.io/astral-sh/uv:0.11.17` |
+| GitHub Actions  | Exact tag: `actions/checkout@v4.2.2`                             |
+| Python packages | `uv.lock` owns the exact versions; `pyproject.toml` sets a floor |
+| Node packages   | `package-lock.json` / `pnpm-lock.yaml` owns the exact versions   |
+
+Update pinned versions deliberately — never as a side effect of running an install command.
+
+## Testing
+
+Structure every test with given / when / then comments. Omit `# given` when there are no preconditions.
+
+```python
+def test_something():
+    # given
+    user = create_user(name="Pat")
+
+    # when
+    response = client.post("/entries", json={...})
+
+    # then
+    assert response.status_code == 201
+```
+
 ## Formatting
 
 Keep Markdown table columns pipe-aligned: pad cells with spaces so the `|` characters form straight vertical lines across all rows, including the separator row.

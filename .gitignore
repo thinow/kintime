@@ -23,3 +23,6 @@ build/
 # IDE
 .idea/
 .vscode/
+
+# Claude Code local overrides
+.claude/settings.local.json
