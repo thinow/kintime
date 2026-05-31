@@ -6,10 +6,15 @@
       "Bash(git diff*)",
       "Bash(git log*)",
       "Bash(git status*)",
-      "Bash(uv run *)",
+      "Bash(npm audit*)",
+      "Bash(npm ci)",
+      "Bash(npm install*)",
+      "Bash(npm run *)",
+      "Bash(npm test*)",
+      "Bash(uv add *)",
       "Bash(uv lock)",
-      "Bash(uv sync*)",
-      "Bash(uv add *)"
+      "Bash(uv run *)",
+      "Bash(uv sync*)"
     ]
   }
 }

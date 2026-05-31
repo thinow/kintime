@@ -16,6 +16,7 @@ dist/
 node_modules/
 dist/
 build/
+.next/
 
 # macOS
 .DS_Store
