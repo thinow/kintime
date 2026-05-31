@@ -60,8 +60,8 @@ A deployable skeleton: Pat opens Kintime and sees a working page that talks to t
 - No staging environment — production is the only deployed environment
 - Automated tests runnable both locally and in CI/CD (GitHub Actions)
 
-- [ ] 1. Backend scaffold — FastAPI app with `GET /health` returning `{"status": "ok", "time": "<server UTC timestamp>"}`. `pyproject.toml` (uv), `uv.lock`, Dockerfile, `fly.toml`, one pytest. Deployed manually to Fly.io.
-- [ ] 2. Frontend scaffold — Next.js (App Router) page that calls `GET /health` on load and renders the server timestamp. Vercel project linked to GitHub, auto-deploys on push to `main`.
+- [x] 1. Backend scaffold — FastAPI app with `GET /health` returning `{"status": "ok", "time": "<server UTC timestamp>"}`. `pyproject.toml` (uv), `uv.lock`, Dockerfile, `fly.toml`, one pytest. Deployed manually to Fly.io.
+- [x] 2. Frontend scaffold — Next.js (App Router) page that calls `GET /health` on load and renders the server timestamp. Vercel project linked to GitHub, auto-deploys on push to `main`.
 - [ ] 3. CI/CD — GitHub Actions workflow: run backend tests, then deploy to Fly.io via `FLY_API_TOKEN` secret. Every push to `main` ships the backend automatically; tests are the gate.
 
 ### M2 — Pat logs in
