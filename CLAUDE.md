@@ -129,6 +129,12 @@ kintime/
 └── LICENSE
 ```
 
+## Architecture
+
+**The browser never calls FastAPI directly.** All FastAPI calls go through Next.js — Server Components, Server Actions, or Route Handlers. The browser only ever talks to Vercel; Vercel talks to Fly.io server-to-server. This keeps CORS out of the picture entirely and is the natural App Router pattern.
+
+If a feature needs client-side reactivity, use Server Actions — not direct browser fetches to the backend.
+
 ## Version Pinning
 
 Pin every external dependency to an exact version. Never use `latest`, floating tags, or open ranges where a lockfile or explicit pin can own it instead.
