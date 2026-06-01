@@ -1,10 +1,7 @@
-from datetime import datetime, timezone
-
 from fastapi import FastAPI
+
+from app.routers import health
 
 app = FastAPI()
 
-
-@app.get("/health")
-def health():
-    return {"status": "ok", "time": datetime.now(timezone.utc).isoformat(), "app": "kintime-api"}
+app.include_router(health.router)
