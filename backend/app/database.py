@@ -1,5 +1,6 @@
 import logging
 import os
+import re
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
@@ -9,8 +10,10 @@ logger = logging.getLogger(__name__)
 _url = os.getenv("DATABASE_URL", "")
 if _url.startswith("postgresql://"):
     _url = _url.replace("postgresql://", "postgresql+asyncpg://", 1)
+# asyncpg uses connect_args for SSL — strip the libpq-style sslmode param
+_url = re.sub(r"[?&]sslmode=[^&]*", "", _url)
 
-engine: AsyncEngine | None = create_async_engine(_url) if _url else None
+engine: AsyncEngine | None = create_async_engine(_url, connect_args={"ssl": "require"}) if _url else None
 
 
 async def ping() -> str:
