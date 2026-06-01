@@ -79,7 +79,7 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - Without a valid session, the app is unreachable
 - Sessions persist across reloads
 
-- [ ] 1. Neon + DB connection — **backend**: Provision Neon (manual), add `DATABASE_URL` to Fly.io secrets. Add `asyncpg` + SQLAlchemy async deps. `GET /health` gains a DB ping. Deployable: backend confirms DB is reachable.
+- [x] 1. Neon + DB connection — **backend**: Provision Neon (manual), add `DATABASE_URL` to Fly.io secrets. Add `asyncpg` + SQLAlchemy async deps. `GET /health` gains a DB ping. Deployable: backend confirms DB is reachable.
 - [ ] 2. Schema + migrations — **backend**: Alembic configured. `users` (id, email, display_name, created_at) and `auth_tokens` (id, user_id, token_hash, expires_at, used_at) tables. Migration runs on deploy. Tests assert tables exist.
 - [ ] 3. Token request endpoint — **backend**: `POST /auth/request-token`: find-or-create user by email, generate random token, store SHA-256 hash with 1h expiry. No email yet — token logged to stdout. Backend tests. Deployable: endpoint works end-to-end with the DB.
 - [ ] 4. Email delivery — **backend**: add `resend` dep, wire magic link email into token endpoint. `RESEND_API_KEY` added to Fly.io secrets. Deployable: curl → real email lands in inbox.
