@@ -31,6 +31,7 @@ jobs:
         run: npm test
 
       - name: Deploy to Vercel
+        working-directory: ${{ github.workspace }}
         run: npx vercel@54.6.1 --prod --token ${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
