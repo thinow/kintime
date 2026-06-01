@@ -3,6 +3,9 @@ name: Frontend
 on:
   push:
     branches: [main]
+    paths:
+      - "frontend/**"
+      - ".github/workflows/frontend.yml"
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
