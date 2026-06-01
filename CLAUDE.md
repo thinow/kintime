@@ -86,7 +86,8 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - [ ] 5. Login page — **frontend**: `/login` page with email form (Server Action calls `POST /auth/request-token`). Deployable: Pat submits his email through the UI and gets a link.
 - [ ] 6. Magic link verify + session — **backend**: `GET /auth/verify?token=<raw>`: validate hash, check expiry/used, mark used, return signed session value (HMAC-SHA256 over user_id + expiry). Backend tests. Deployable: verify endpoint works (curl-testable).
 - [ ] 7. Auth callback — **frontend**: `/auth/callback` route reads `?token=`, calls verify endpoint, sets HTTP-only session cookie, redirects to `/`. Deployable: clicking the email link logs Pat in.
-- [ ] 8. Auth guard + display name — **backend** `PATCH /users/me` saves display_name; **frontend** middleware redirects unauthenticated requests to `/login`, first-login redirects to `/setup` page. Deployable: app is fully gated.
+- [ ] 8. Display name endpoint — **backend**: `PATCH /users/me` saves display_name. Deployable: endpoint works (curl-testable).
+- [ ] 9. Auth guard + setup page — **frontend**: middleware redirects unauthenticated requests to `/login`; first-login redirects to `/setup` where Pat enters a display name. Deployable: app is fully gated.
 
 ### M3 — UI foundation
 Establish the visual language before domain features are built on top of it. Intentionally thin — polish the screens that already exist, set the mobile baseline, and stop.
