@@ -37,10 +37,12 @@ Use these names in examples, tests, seed data, and documentation.
 | M0 — Planning & Setup         | done        |
 | M1 — Walking Skeleton         | done        |
 | M2 — Pat logs in              | in progress |
-| M3 — Pat sets up his family   | pending     |
-| M4 — Pat logs time            | pending     |
-| M5 — Pat sees balance         | pending     |
-| M6 — Pat notices imbalance    | pending     |
+| M3 — UI foundation            | pending     |
+| M4 — Pat sets up his family   | pending     |
+| M5 — Pat logs time            | pending     |
+| M6 — Pat sees balance         | pending     |
+| M7 — UI polish                | pending     |
+| M8 — Pat notices imbalance    | pending     |
 
 > When a milestone status changes, update both this table and the Roadmap table in `README.md`.
 
@@ -78,7 +80,7 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - Sessions persist across reloads
 
 - [ ] 1. Neon + DB connection — **backend**: Provision Neon (manual), add `DATABASE_URL` to Fly.io secrets. Add `asyncpg` + SQLAlchemy async deps. `GET /health` gains a DB ping. Deployable: backend confirms DB is reachable.
-- [ ] 2. Schema + migrations — **backend**: Alembic configured. `users` (id, email, display_name, created_at) and `magic_tokens` (id, user_id, token_hash, expires_at, used_at) tables. Migration runs on deploy. Tests assert tables exist.
+- [ ] 2. Schema + migrations — **backend**: Alembic configured. `users` (id, email, display_name, created_at) and `auth_tokens` (id, user_id, token_hash, expires_at, used_at) tables. Migration runs on deploy. Tests assert tables exist.
 - [ ] 3. Token request endpoint — **backend**: `POST /auth/request-token`: find-or-create user by email, generate random token, store SHA-256 hash with 1h expiry. No email yet — token logged to stdout. Backend tests. Deployable: endpoint works end-to-end with the DB.
 - [ ] 4. Email delivery — **backend**: add `resend` dep, wire magic link email into token endpoint. `RESEND_API_KEY` added to Fly.io secrets. Deployable: curl → real email lands in inbox.
 - [ ] 5. Login page — **frontend**: `/login` page with email form (Server Action calls `POST /auth/request-token`). Deployable: Pat submits his email through the UI and gets a link.
@@ -86,31 +88,45 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - [ ] 7. Auth callback — **frontend**: `/auth/callback` route reads `?token=`, calls verify endpoint, sets HTTP-only session cookie, redirects to `/`. Deployable: clicking the email link logs Pat in.
 - [ ] 8. Auth guard + display name — **backend** `PATCH /users/me` saves display_name; **frontend** middleware redirects unauthenticated requests to `/login`, first-login redirects to `/setup` page. Deployable: app is fully gated.
 
-### M3 — Pat sets up his family
+### M3 — UI foundation
+Establish the visual language before domain features are built on top of it. Intentionally thin — polish the screens that already exist, set the mobile baseline, and stop.
+
+- Font, color palette, and spacing established
+- Login, setup, and home screens polished on mobile
+- No component library — just Tailwind conventions the rest of the app follows
+
+### M4 — Pat sets up his family
 Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
 
 - A form to add an attached person (name)
 - Edit and remove existing persons
-- Entries persist (PostgreSQL on Neon arrives here)
+- Entries persist in the existing database
 
-### M4 — Pat logs time
+### M5 — Pat logs time
 Pat logs time spent with one of his attached persons.
 
 - A time entry can be logged (attached person + duration + timestamp)
-- The attached person is picked from those Pat set up in M3
+- The attached person is picked from those Pat set up in M4
 
-### M5 — Pat sees balance
+### M6 — Pat sees balance
 Pat sees how his time has been distributed across attached persons.
 
 - A view shows cumulative time per attached person
 - Computed from logged entries
 
-### M6 — Pat notices imbalance
+### M7 — UI polish
+With all core features built and real data visible, refine the full experience. Tighten the mobile layout, improve visual hierarchy, and make the app feel cohesive end-to-end.
+
+- All feature screens refined in context of real data
+- Mobile experience consistent and cohesive
+- Visual hierarchy and spacing aligned across screens
+
+### M8 — Pat notices imbalance
 Pat is gently surfaced when his time has drifted toward one attached person. This is the core product vision — "spot imbalances before they become patterns."
 
 - A visual cue, summary, or notification surfaces imbalance
 - Threshold and tone calibrated to feel honest, not guilt-tripping
-- Flows refined based on real usage from M3-M5
+- Flows refined based on real usage from M4-M6
 
 ## Repository Structure
 
