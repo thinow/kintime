@@ -7,4 +7,4 @@ app = FastAPI()
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "time": datetime.now(timezone.utc).isoformat()}
+    return {"status": "ok", "time": datetime.now(timezone.utc).isoformat(), "app": "kintime-api"}
