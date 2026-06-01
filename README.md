@@ -8,7 +8,7 @@ A web app (mobile-first) to help you track and balance the time you spend with t
 
 ## The Problem
 
-Homer has three kids: Bart, Lisa, and Maggie. He loves them equally but life gets busy — and without noticing, he might end up spending three weekends in a row with Bart while Lisa and Maggie barely see him. Kintime keeps that honest without making it a chore.
+You have kids. You love them equally but life gets busy — and without noticing, you might spend three weekends in a row with one while the others barely see you. Kintime keeps that honest without making it a chore.
 
 ## What It Does
 
@@ -35,16 +35,15 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Roadmap
 
-| Milestone                         | Goal                                                                | Status      |
-|-----------------------------------|---------------------------------------------------------------------|-------------|
-| **M0 — Planning**                 | Project vision, stack, hosting, and collaboration workflow defined. | done        |
-| **M1 — Walking Skeleton**         | A working page talks to the backend in production. No domain yet.   | pending     |
-| **M2 — Homer sets up his family** | Create and edit attached persons (Bart, Lisa, Maggie). No auth yet. | pending     |
-| **M3 — Homer logs time**          | Log a time entry with one of the attached persons from M2.          | pending     |
-| **M4 — Homer sees balance**       | View cumulative time per attached person.                           | pending     |
-| **M5 — Homer notices imbalance**  | Gentle awareness when time has drifted toward one person.           | pending     |
-| **M6 — Guest tries the demo**     | A public, sandboxed walkthrough of the product loop with fake data. | pending     |
-| **M7 — Homer logs in**            | Authentication gates the app so personal data stays private.        | pending     |
+| Milestone                    | Goal                                                                | Status  |
+|------------------------------|---------------------------------------------------------------------|---------|
+| **M0 — Planning**            | Project vision, stack, hosting, and collaboration workflow defined. | done    |
+| **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | done    |
+| **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | pending |
+| **M3 — Sets up family**      | Create and edit attached persons. First real domain data.          | pending |
+| **M4 — Logs time**           | Log a time entry against one of the attached persons.              | pending |
+| **M5 — Sees balance**        | View cumulative time per attached person.                          | pending |
+| **M6 — Notices imbalance**   | Gentle awareness when time has drifted toward one person.          | pending |
 
 > No staging environment. Tests run locally and in CI/CD.
 
@@ -65,4 +64,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M0 complete — starting M1 (Walking Skeleton).
+M1 complete — starting M2.
