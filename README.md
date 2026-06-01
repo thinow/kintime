@@ -35,15 +35,15 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Roadmap
 
-| Milestone                    | Goal                                                                | Status  |
-|------------------------------|---------------------------------------------------------------------|---------|
-| **M0 — Planning**            | Project vision, stack, hosting, and collaboration workflow defined. | done    |
-| **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | done    |
-| **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | pending |
-| **M3 — Sets up family**      | Create and edit attached persons. First real domain data.          | pending |
-| **M4 — Logs time**           | Log a time entry against one of the attached persons.              | pending |
-| **M5 — Sees balance**        | View cumulative time per attached person.                          | pending |
-| **M6 — Notices imbalance**   | Gentle awareness when time has drifted toward one person.          | pending |
+| Milestone                    | Goal                                                                | Status         |
+|------------------------------|---------------------------------------------------------------------|----------------|
+| **M0 — Planning**            | Project vision, stack, hosting, and collaboration workflow defined. | ✅ done        |
+| **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | ✅ done        |
+| **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | 🔄 in progress |
+| **M3 — Sets up family**      | Create and edit attached persons. First real domain data.          | ⬜ pending     |
+| **M4 — Logs time**           | Log a time entry against one of the attached persons.              | ⬜ pending     |
+| **M5 — Sees balance**        | View cumulative time per attached person.                          | ⬜ pending     |
+| **M6 — Notices imbalance**   | Gentle awareness when time has drifted toward one person.          | ⬜ pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 

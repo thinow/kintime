@@ -35,12 +35,14 @@ Use these names in examples, tests, seed data, and documentation.
 | Milestone                     | Status      |
 |-------------------------------|-------------|
 | M0 — Planning & Setup         | done        |
-| M1 — Walking Skeleton         | pending     |
-| M2 — Pat logs in              | pending     |
+| M1 — Walking Skeleton         | done        |
+| M2 — Pat logs in              | in progress |
 | M3 — Pat sets up his family   | pending     |
 | M4 — Pat logs time            | pending     |
 | M5 — Pat sees balance         | pending     |
 | M6 — Pat notices imbalance    | pending     |
+
+> When a milestone status changes, update both this table and the Roadmap table in `README.md`.
 
 ### M0 — Planning & Setup `done`
 Define the project vision, stack, hosting strategy, collaboration workflow, and tooling. This milestone is the human-AI co-development setup phase.
@@ -74,6 +76,13 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - On first login, Pat is prompted to enter a display name (email remains the identifier)
 - Without a valid session, the app is unreachable
 - Sessions persist across reloads
+
+- [ ] 1. Neon + DB connection — Provision Neon (manual), add `DATABASE_URL` to Fly.io secrets. Add `asyncpg` + SQLAlchemy async deps. `GET /health` gains a DB ping. Deployable: backend confirms DB is reachable.
+- [ ] 2. Schema + migrations — Alembic configured. `users` (id, email, display_name, created_at) and `magic_tokens` (id, user_id, token_hash, expires_at, used_at) tables. Migration runs on deploy. Tests assert tables exist.
+- [ ] 3. Token request endpoint — `POST /auth/request-token`: find-or-create user by email, generate random token, store SHA-256 hash with 1h expiry. No email yet — token logged to stdout. Backend tests. Deployable: endpoint works end-to-end with the DB.
+- [ ] 4. Login page + email delivery — Frontend `/login` page with email form (Server Action). Backend sends the magic link via Resend. `RESEND_API_KEY` added to Fly.io secrets. Deployable: Pat submits his email and gets a real link in his inbox.
+- [ ] 5. Magic link verification + session — `GET /auth/verify?token=<raw>`: validate hash, check expiry/used, mark used, set signed HTTP-only cookie (HMAC-SHA256 over user_id + expiry). Frontend `/auth/callback` route redirects to `/`. Deployable: clicking the link logs Pat in.
+- [ ] 6. Auth guard + display name — Next.js middleware redirects unauthenticated requests to `/login`. On first login (no `display_name`), redirect to `/setup`; `PATCH /users/me` saves it. Deployable: app is fully gated.
 
 ### M3 — Pat sets up his family
 Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
