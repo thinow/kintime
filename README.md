@@ -4,6 +4,8 @@
 
 A web app (mobile-first) to help you track and balance the time you spend with the people you love.
 
+**Try it out:** [kintime.vercel.app](https://kintime.vercel.app)
+
 ## The Problem
 
 Homer has three kids: Bart, Lisa, and Maggie. He loves them equally but life gets busy — and without noticing, he might end up spending three weekends in a row with Bart while Lisa and Maggie barely see him. Kintime keeps that honest without making it a chore.
