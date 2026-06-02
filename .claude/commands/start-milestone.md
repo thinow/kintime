@@ -10,6 +10,7 @@ description: Break the next milestone into 1-hour deployable iterations and reco
    - Be the thinnest vertical slice toward the milestone goal.
    - Stay strictly within milestone scope (apply YAGNI; defer anything beyond it).
    - Prefer touching a single layer (backend only or frontend only). When both are needed, put the backend iteration first — the frontend should only call a new endpoint once the backend is confirmed live, so a failed backend deploy never leaves the frontend broken and out of sync.
+   - Include a concrete **production verification step**: a specific curl command, Neon console check, or browser action that confirms the iteration works in production before the next one begins. Never assume the deploy worked — verify it.
 4. Be challenging: flag iterations that are too broad, speculative, or introduce abstraction without earning it.
 5. For schema changes, apply the expand-contract pattern — never mutate a live column in a single step. Split into three iterations:
    - **Expand**: migration adds the new column/table (old code still works, no deploy needed yet).
