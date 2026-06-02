@@ -7,13 +7,20 @@ from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
 
 logger = logging.getLogger(__name__)
 
-_url = os.getenv("DATABASE_URL", "")
-if _url.startswith("postgresql://"):
-    _url = _url.replace("postgresql://", "postgresql+asyncpg://", 1)
-# asyncpg uses connect_args for SSL — strip the libpq-style sslmode param
-_url = re.sub(r"[?&]sslmode=[^&]*", "", _url)
 
-engine: AsyncEngine | None = create_async_engine(_url, connect_args={"ssl": "require"}) if _url else None
+def parse_database_url(raw: str) -> tuple[str, dict]:
+    needs_ssl = "sslmode=require" in raw
+    url = raw
+    if url.startswith("postgresql://"):
+        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
+    url = re.sub(r"[?&]sslmode=[^&]*", "", url)
+    connect_args = {"ssl": "require"} if needs_ssl else {}
+    return url, connect_args
+
+
+_url, _connect_args = parse_database_url(os.getenv("DATABASE_URL", ""))
+
+engine: AsyncEngine | None = create_async_engine(_url, connect_args=_connect_args) if _url else None
 
 
 async def ping() -> str:

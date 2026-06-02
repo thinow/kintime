@@ -11,7 +11,12 @@ description: Break the next milestone into 1-hour deployable iterations and reco
    - Stay strictly within milestone scope (apply YAGNI; defer anything beyond it).
    - Prefer touching a single layer (backend only or frontend only). When both are needed, put the backend iteration first — the frontend should only call a new endpoint once the backend is confirmed live, so a failed backend deploy never leaves the frontend broken and out of sync.
 4. Be challenging: flag iterations that are too broad, speculative, or introduce abstraction without earning it.
-5. Wait for the user to confirm or amend.
-6. Once approved, append the iterations as a checklist under the milestone's `### Mn` section in CLAUDE.md:
+5. For schema changes, apply the expand-contract pattern — never mutate a live column in a single step. Split into three iterations:
+   - **Expand**: migration adds the new column/table (old code still works, no deploy needed yet).
+   - **Contract (backend)**: backend reads/writes the new column; falls back to old if absent. Deploy this before removing anything.
+   - **Contract (schema)**: migration drops the old column once the backend no longer touches it.
+   This ensures the running backend is never out of sync with the deployed schema. Example: renaming `name` → `display_name` = three iterations, not one.
+6. Wait for the user to confirm or amend.
+7. Once approved, append the iterations as a checklist under the milestone's `### Mn` section in CLAUDE.md:
    `- [ ] 1. Iteration title — one-line scope`
-7. Suggest starting iteration 1.
+8. Suggest starting iteration 1.
