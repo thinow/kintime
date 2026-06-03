@@ -10,6 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
+from app.email import send_magic_link_email
 from app.models import AuthToken, User
 
 logger = logging.getLogger(__name__)
@@ -40,4 +41,4 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
     ))
     await db.commit()
 
-    logger.info("magic-link token=%s", raw_token)
+    send_magic_link_email(to=body.email, token=raw_token)

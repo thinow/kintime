@@ -123,6 +123,22 @@ def test_request_token_skips_flush_when_user_already_exists():
     session.flush.assert_not_called()
 
 
+def test_request_token_sends_magic_link_email(mock_send_magic_link_email):
+    # given
+    session, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    mock_send_magic_link_email.assert_called_once()
+    call_kwargs = mock_send_magic_link_email.call_args
+    assert call_kwargs.kwargs["to"] == "pat@example.com"
+    assert isinstance(call_kwargs.kwargs["token"], str) and len(call_kwargs.kwargs["token"]) > 0
+
+
 def test_request_token_stores_sha256_hash():
     # given
     session, override = _db_override(existing_user=None)
