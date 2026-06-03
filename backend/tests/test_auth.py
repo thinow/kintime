@@ -26,6 +26,32 @@ def _db_override(existing_user=None):
     return session, override
 
 
+def test_request_token_rejects_invalid_email():
+    # given
+    _, override = _db_override()
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.post("/auth/request-token", json={"email": "not-an-email"})
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 422
+
+
+def test_request_token_rejects_missing_email():
+    # given
+    _, override = _db_override()
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.post("/auth/request-token", json={})
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 422
+
+
 def test_request_token_returns_204():
     # given
     session, override = _db_override(existing_user=None)
