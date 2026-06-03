@@ -5,7 +5,7 @@ import os
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
 # asyncpg 0.31.0 removed channel_binding from connect(); SQLAlchemy 2.0.x still passes it
 if "channel_binding" not in inspect.signature(_asyncpg.connect).parameters:
@@ -32,6 +32,17 @@ def parse_database_url(raw: str) -> tuple[str, dict]:
 _url, _connect_args = parse_database_url(os.getenv("DATABASE_URL", ""))
 
 engine: AsyncEngine | None = create_async_engine(_url, connect_args=_connect_args) if _url else None
+
+_session_factory: async_sessionmaker | None = (
+    async_sessionmaker(engine, expire_on_commit=False) if engine else None
+)
+
+
+async def get_db():
+    if _session_factory is None:
+        raise RuntimeError("DATABASE_URL not configured")
+    async with _session_factory() as session:
+        yield session
 
 
 async def ping() -> str:
