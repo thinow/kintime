@@ -1,6 +1,6 @@
 import logging
 import os
-import re
+from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 def parse_database_url(raw: str) -> tuple[str, dict]:
     needs_ssl = "sslmode=require" in raw
-    url = raw
-    if url.startswith("postgresql://"):
-        url = url.replace("postgresql://", "postgresql+asyncpg://", 1)
-    url = re.sub(r"[?&]sslmode=[^&]*", "", url)
+    url = raw.replace("postgresql://", "postgresql+asyncpg://", 1)
+    parsed = urlparse(url)
+    params = {k: v[0] for k, v in parse_qs(parsed.query).items() if k != "sslmode"}
+    url = urlunparse(parsed._replace(query=urlencode(params)))
     connect_args = {"ssl": "require"} if needs_ssl else {}
     return url, connect_args
 

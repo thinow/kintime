@@ -2,7 +2,39 @@ from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
-from app.database import ping
+from app.database import parse_database_url, ping
+
+
+def test_parse_database_url_converts_scheme_and_enables_ssl():
+    # when
+    url, connect_args = parse_database_url("postgresql://user:pass@host/neondb?sslmode=require")
+
+    # then
+    assert url == "postgresql+asyncpg://user:pass@host/neondb"
+    assert connect_args == {"ssl": "require"}
+
+
+def test_parse_database_url_preserves_extra_params_when_stripping_sslmode():
+    # given — Neon URLs sometimes carry additional query params alongside sslmode
+    raw = "postgresql://user:pass@host/neondb?sslmode=require&options=endpoint%3Dep-xxx"
+
+    # when
+    url, connect_args = parse_database_url(raw)
+
+    # then
+    assert "sslmode" not in url
+    assert "options=" in url
+    assert "neondb?" in url  # extra params stay as query string, not corrupting the db name
+    assert connect_args == {"ssl": "require"}
+
+
+def test_parse_database_url_no_ssl_without_sslmode():
+    # when
+    url, connect_args = parse_database_url("postgresql://user:pass@localhost/kintime_test")
+
+    # then
+    assert url == "postgresql+asyncpg://user:pass@localhost/kintime_test"
+    assert connect_args == {}
 
 
 @pytest.mark.anyio
