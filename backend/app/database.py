@@ -1,9 +1,20 @@
+import asyncpg as _asyncpg
+import inspect
 import logging
 import os
 from urllib.parse import parse_qs, urlencode, urlparse, urlunparse
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine
+
+# asyncpg 0.31.0 removed channel_binding from connect(); SQLAlchemy 2.0.x still passes it
+if "channel_binding" not in inspect.signature(_asyncpg.connect).parameters:
+    _orig_connect = _asyncpg.connect
+
+    async def _connect_compat(*args, channel_binding=None, **kwargs):
+        return await _orig_connect(*args, **kwargs)
+
+    _asyncpg.connect = _connect_compat
 
 logger = logging.getLogger(__name__)
 

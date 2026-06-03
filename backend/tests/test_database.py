@@ -1,8 +1,24 @@
+import asyncpg
 from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 
+import app.database
 from app.database import parse_database_url, ping
+
+
+@pytest.mark.anyio
+async def test_asyncpg_connect_compat_shim_drops_channel_binding():
+    if not hasattr(app.database, "_orig_connect"):
+        pytest.skip("shim not applied: asyncpg natively supports channel_binding")
+
+    # given
+    with patch("app.database._orig_connect", AsyncMock()) as mock_orig:
+        # when — simulate SQLAlchemy 2.0.x passing channel_binding to asyncpg.connect
+        await asyncpg.connect("postgresql://localhost/test", channel_binding="require")
+
+    # then — channel_binding was silently dropped; real connect received only the dsn
+    mock_orig.assert_called_once_with("postgresql://localhost/test")
 
 
 def test_parse_database_url_converts_scheme_and_enables_ssl():
