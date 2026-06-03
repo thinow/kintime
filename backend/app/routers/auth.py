@@ -39,6 +39,6 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
         token_hash=token_hash,
         expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
     ))
-    await db.commit()
 
     send_magic_link_email(to=body.email, token=raw_token)
+    await db.commit()

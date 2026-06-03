@@ -2,6 +2,8 @@ import hashlib
 import uuid
 from unittest.mock import AsyncMock, MagicMock
 
+import pytest
+
 from fastapi.testclient import TestClient
 
 from app.database import get_db
@@ -121,6 +123,21 @@ def test_request_token_skips_flush_when_user_already_exists():
     # then
     app.dependency_overrides.clear()
     session.flush.assert_not_called()
+
+
+def test_request_token_rolls_back_if_email_fails(mock_send_magic_link_email):
+    # given
+    session, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+    mock_send_magic_link_email.side_effect = Exception("Resend error")
+
+    # when
+    with pytest.raises(Exception):
+        client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    session.commit.assert_not_called()
 
 
 def test_request_token_sends_magic_link_email(mock_send_magic_link_email):
