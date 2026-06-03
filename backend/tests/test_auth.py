@@ -54,6 +54,19 @@ def test_request_token_creates_user_and_token_for_new_email():
     assert any(isinstance(obj, AuthToken) for obj in added)
 
 
+def test_request_token_flushes_after_new_user_to_satisfy_fk():
+    # given
+    session, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    session.flush.assert_called_once()
+
+
 def test_request_token_reuses_existing_user():
     # given
     existing = User(id=uuid.uuid4(), email="pat@example.com")
@@ -68,6 +81,20 @@ def test_request_token_reuses_existing_user():
     added = [c.args[0] for c in session.add.call_args_list]
     assert not any(isinstance(obj, User) for obj in added)
     assert any(isinstance(obj, AuthToken) for obj in added)
+
+
+def test_request_token_skips_flush_when_user_already_exists():
+    # given
+    existing = User(id=uuid.uuid4(), email="pat@example.com")
+    session, override = _db_override(existing_user=existing)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    session.flush.assert_not_called()
 
 
 def test_request_token_stores_sha256_hash():

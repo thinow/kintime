@@ -28,6 +28,7 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
     if user is None:
         user = User(id=uuid.uuid4(), email=body.email)
         db.add(user)
+        await db.flush()
 
     raw_token = secrets.token_urlsafe(32)
     token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
