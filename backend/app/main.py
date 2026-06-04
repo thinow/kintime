@@ -6,7 +6,7 @@ from fastapi import FastAPI
 
 logging.getLogger().setLevel(logging.INFO)
 
-from app.routers import auth, health
+from app.routers import auth, health, users
 
 _REQUIRED_ENV_VARS = ["RESEND_API_KEY", "FRONTEND_URL", "SESSION_SECRET"]
 
@@ -23,3 +23,4 @@ app = FastAPI(lifespan=lifespan)
 
 app.include_router(health.router)
 app.include_router(auth.router)
+app.include_router(users.router)
