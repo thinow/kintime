@@ -1,7 +1,10 @@
+import logging
 import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+
+logging.getLogger().setLevel(logging.INFO)
 
 from app.routers import auth, health
 
