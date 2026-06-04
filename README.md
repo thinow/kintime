@@ -4,7 +4,7 @@
 
 A web app (mobile-first) to help you track and balance the time you spend with the people you love.
 
-**Try it out:** [kintime.vercel.app](https://kintime.vercel.app)
+**Try it out:** [kintime.thinow.dev](https://kintime.thinow.dev)
 
 ## The Problem
 
@@ -66,4 +66,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M1 complete — starting M2.
+M2 in progress — login page live, magic link auth wired end-to-end.
