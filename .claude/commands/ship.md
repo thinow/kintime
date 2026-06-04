@@ -3,9 +3,8 @@ description: Stage all changes, suggest a commit message for approval, then comm
 ---
 
 1. Run `git diff` and `git status` to understand what changed.
-2. Suggest a commit message following the Conventional Commits format from CLAUDE.md: `<type>(<scope>): <description>`. Make it concise and accurate.
-3. Wait for the user to confirm or amend the message.
-4. Once approved, run in order:
+2. Draft a commit message following the Conventional Commits format from CLAUDE.md: `<type>(<scope>): <description>`. Make it concise and accurate.
+3. Without waiting for confirmation, run in order:
    - `git add` the relevant files
-   - `git commit` with the approved message and the trailer `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
+   - `git commit` with the drafted message and the trailer `Co-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>`
    - `git push`
