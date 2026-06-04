@@ -10,7 +10,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.email import send_magic_link_email
+from app.email import send_admin_new_user_notification, send_magic_link_email
 from app.models import AuthToken, User
 
 logger = logging.getLogger(__name__)
@@ -25,8 +25,9 @@ class TokenRequest(BaseModel):
 async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
     result = await db.execute(select(User).where(User.email == body.email))
     user = result.scalar_one_or_none()
+    is_new_user = user is None
 
-    if user is None:
+    if is_new_user:
         user = User(id=uuid.uuid4(), email=body.email)
         db.add(user)
         await db.flush()
@@ -42,3 +43,9 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
 
     send_magic_link_email(to=body.email, token=raw_token)
     await db.commit()
+
+    if is_new_user:
+        try:
+            send_admin_new_user_notification(new_user_email=body.email)
+        except Exception:
+            logger.exception("admin notification failed for new user %s", body.email)

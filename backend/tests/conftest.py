@@ -12,3 +12,9 @@ def required_env_vars():
 def mock_send_magic_link_email():
     with patch("app.routers.auth.send_magic_link_email") as mock:
         yield mock
+
+
+@pytest.fixture(autouse=True)
+def mock_send_admin_new_user_notification():
+    with patch("app.routers.auth.send_admin_new_user_notification") as mock:
+        yield mock

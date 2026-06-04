@@ -156,6 +156,47 @@ def test_request_token_sends_magic_link_email(mock_send_magic_link_email):
     assert isinstance(call_kwargs.kwargs["token"], str) and len(call_kwargs.kwargs["token"]) > 0
 
 
+def test_request_token_notifies_admin_for_new_user(mock_send_admin_new_user_notification):
+    # given
+    session, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    mock_send_admin_new_user_notification.assert_called_once_with(new_user_email="pat@example.com")
+
+
+def test_request_token_skips_admin_notification_for_existing_user(mock_send_admin_new_user_notification):
+    # given
+    existing = User(id=uuid.uuid4(), email="pat@example.com")
+    session, override = _db_override(existing_user=existing)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    mock_send_admin_new_user_notification.assert_not_called()
+
+
+def test_request_token_does_not_fail_if_admin_notification_fails(mock_send_admin_new_user_notification):
+    # given
+    session, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+    mock_send_admin_new_user_notification.side_effect = Exception("email error")
+
+    # when
+    response = client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 204
+
+
 def test_request_token_stores_sha256_hash():
     # given
     session, override = _db_override(existing_user=None)
