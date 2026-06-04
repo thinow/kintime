@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 export default async function Page() {
   const res = await fetch(`${process.env.BACKEND_URL}/health`, {
     cache: "no-store",
@@ -9,6 +11,7 @@ export default async function Page() {
       <h1>Kintime</h1>
       <p>Track time with the people you love.</p>
       <p>Server time: {time}</p>
+      <Link href="/login">Sign in</Link>
     </main>
   )
 }
