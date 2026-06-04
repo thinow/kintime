@@ -1,15 +1,10 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+import { NextRequest, NextResponse } from "next/server"
 
-interface Props {
-  searchParams: Promise<{ token?: string }>
-}
-
-export default async function AuthCallbackPage({ searchParams }: Props) {
-  const { token } = await searchParams
+export async function GET(request: NextRequest) {
+  const token = request.nextUrl.searchParams.get("token")
 
   if (!token) {
-    redirect("/login")
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   // no-store: never cache — returning a cached session token to the wrong user would be a security bug
@@ -19,13 +14,13 @@ export default async function AuthCallbackPage({ searchParams }: Props) {
   )
 
   if (!res.ok) {
-    redirect("/login")
+    return NextResponse.redirect(new URL("/login", request.url))
   }
 
   const { session } = await res.json()
 
-  const cookieStore = await cookies()
-  cookieStore.set("session", session, {
+  const response = NextResponse.redirect(new URL("/", request.url))
+  response.cookies.set("session", session, {
     httpOnly: true,
     // lax: sent on top-level navigations (e.g. clicking the magic link), but not on
     // embedded cross-site requests — right balance for an auth cookie
@@ -36,5 +31,5 @@ export default async function AuthCallbackPage({ searchParams }: Props) {
     path: "/",
   })
 
-  redirect("/")
+  return response
 }
