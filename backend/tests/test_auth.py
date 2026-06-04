@@ -1,5 +1,6 @@
 import hashlib
 import uuid
+from datetime import datetime, timedelta, timezone
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -211,3 +212,117 @@ def test_request_token_stores_sha256_hash():
     token = next(obj for obj in added if isinstance(obj, AuthToken))
     assert len(token.token_hash) == 64  # SHA-256 hex digest is always 64 chars
     assert token.token_hash == token.token_hash.lower()  # hex digits only
+
+
+# --- verify endpoint ---
+
+def _valid_auth_token():
+    return AuthToken(
+        id=uuid.uuid4(),
+        user_id=uuid.uuid4(),
+        token_hash="irrelevant",
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+        used_at=None,
+    )
+
+
+def test_verify_returns_404_for_unknown_token():
+    # given
+    _, override = _db_override(existing_user=None)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=unknown")
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 404
+
+
+def test_verify_returns_401_for_expired_token():
+    # given
+    expired = AuthToken(
+        id=uuid.uuid4(),
+        user_id=uuid.uuid4(),
+        token_hash="irrelevant",
+        expires_at=datetime.now(timezone.utc) - timedelta(hours=1),
+        used_at=None,
+    )
+    _, override = _db_override(existing_user=expired)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 401
+
+
+def test_verify_returns_401_for_already_used_token():
+    # given
+    used = AuthToken(
+        id=uuid.uuid4(),
+        user_id=uuid.uuid4(),
+        token_hash="irrelevant",
+        expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+        used_at=datetime.now(timezone.utc) - timedelta(minutes=5),
+    )
+    _, override = _db_override(existing_user=used)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 401
+
+
+def test_verify_returns_200_with_session_for_valid_token():
+    # given
+    _, override = _db_override(existing_user=_valid_auth_token())
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 200
+    assert "session" in response.json()
+
+
+def test_verify_marks_token_as_used():
+    # given
+    auth_token = _valid_auth_token()
+    session, override = _db_override(existing_user=auth_token)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    assert auth_token.used_at is not None
+    session.commit.assert_called_once()
+
+
+def test_verify_session_has_valid_hmac_signature():
+    # given
+    auth_token = _valid_auth_token()
+    _, override = _db_override(existing_user=auth_token)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    import base64, hashlib, hmac, os
+    session_value = response.json()["session"]
+    payload_b64, signature = session_value.rsplit(".", 1)
+    expected_sig = hmac.new(os.getenv("SESSION_SECRET", "").encode(), payload_b64.encode(), hashlib.sha256).hexdigest()
+    assert signature == expected_sig
+    payload = base64.urlsafe_b64decode(payload_b64).decode()
+    assert str(auth_token.user_id) in payload

@@ -8,7 +8,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 from app.routers import auth, health
 
-_REQUIRED_ENV_VARS = ["RESEND_API_KEY", "FRONTEND_URL"]
+_REQUIRED_ENV_VARS = ["RESEND_API_KEY", "FRONTEND_URL", "SESSION_SECRET"]
 
 
 @asynccontextmanager
