@@ -1,23 +1,49 @@
 import { renderToStaticMarkup } from "react-dom/server"
-import { beforeEach, describe, expect, it, vi } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 
 import Page from "./page"
 
-describe("Page", () => {
-  beforeEach(() => {
-    process.env.BACKEND_URL = "http://localhost:8080"
-  })
+function makeSessionToken(email: string): string {
+  const payload = {
+    user_id: "00000000-0000-0000-0000-000000000001",
+    email,
+    expires_at: "2099-01-01T00:00:00Z",
+  }
+  const payloadB64 = Buffer.from(JSON.stringify(payload)).toString("base64url")
+  return `${payloadB64}.fakesig`
+}
 
-  it("renders the server timestamp from the health endpoint", async () => {
+vi.mock("next/headers", () => ({
+  cookies: vi.fn(),
+}))
+
+describe("Page", () => {
+  it("shows the user's email when a valid session cookie is present", async () => {
     // given
-    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-      json: () => Promise.resolve({ status: "ok", time: "2026-05-31T12:00:00Z" }),
-    }))
+    const { cookies } = await import("next/headers")
+    vi.mocked(cookies).mockResolvedValue({
+      get: (name: string) =>
+        name === "session" ? { value: makeSessionToken("pat@example.com") } : undefined,
+    } as never)
 
     // when
     const html = renderToStaticMarkup(await Page())
 
     // then
-    expect(html).toContain("2026-05-31T12:00:00Z")
+    expect(html).toContain("Hey! pat@example.com")
+  })
+
+  it("shows nothing when no session cookie is present", async () => {
+    // given
+    const { cookies } = await import("next/headers")
+    vi.mocked(cookies).mockResolvedValue({
+      get: () => undefined,
+    } as never)
+
+    // when
+    const html = renderToStaticMarkup(await Page())
+
+    // then
+    expect(html).not.toContain("Hey!")
   })
 })
