@@ -97,6 +97,10 @@ Establish the visual language before domain features are built on top of it. Int
 - Login, setup, and home screens polished on mobile
 - No component library — just Tailwind conventions the rest of the app follows
 
+- [ ] 1. Tailwind + design tokens — install Tailwind v4, wire up globals.css, pick a font via next/font, define CSS variables for background/foreground/accent/muted. Verify: font loads on `/login` in production, no layout regression.
+- [ ] 2. Login screen polish — mobile-first Tailwind classes on login page and form: centered layout, styled input, styled button, error state. Verify: `/login` on 390px viewport looks intentional.
+- [ ] 3. Home screen polish — mobile-first Tailwind classes on home page: greeting, spacing, typography consistent with login. Verify: log in end-to-end on mobile, design language matches.
+
 ### M4 — Pat sets up his family
 Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
 

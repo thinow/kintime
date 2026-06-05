@@ -40,7 +40,7 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M0 — Planning**            | Project vision, stack, hosting, and collaboration workflow defined. | ✅ done        |
 | **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | ✅ done        |
 | **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | ✅ done        |
-| **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | ⬜ pending     |
+| **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | 🔄 in progress |
 | **M4 — Sets up family**      | Create and edit attached persons. First real domain data.          | ⬜ pending     |
 | **M5 — Logs time**           | Log a time entry against one of the attached persons.              | ⬜ pending     |
 | **M6 — Sees balance**        | View cumulative time per attached person.                          | ⬜ pending     |
@@ -72,4 +72,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M2 done — magic link auth complete, app fully gated. Starting M3 (UI foundation).
+M3 in progress — Tailwind v4 installed, Inter font and design tokens wired up. Polishing login and home screens next.

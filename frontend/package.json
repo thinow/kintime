@@ -9,9 +9,11 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@tailwindcss/postcss": "^4.1.8",
     "next": "16.2.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "tailwindcss": "^4.1.8"
   },
   "devDependencies": {
     "@types/node": "22.15.18",
