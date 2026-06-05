@@ -69,7 +69,12 @@ async def verify_token(token: str, db: AsyncSession = Depends(get_db)):
     if auth_token.used_at is not None:
         raise HTTPException(status_code=401, detail="Token already used")
 
+    user_result = await db.execute(select(User).where(User.id == auth_token.user_id))
+    user = user_result.scalar_one_or_none()
+    if user is None:
+        raise HTTPException(status_code=500, detail="User not found")
+
     auth_token.used_at = now
     await db.commit()
 
-    return {"session": create_session(auth_token.user_id)}
+    return {"session": create_session(auth_token.user_id, user.email)}

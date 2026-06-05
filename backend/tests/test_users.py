@@ -12,7 +12,7 @@ client = TestClient(app)
 
 
 def _make_session(user_id: uuid.UUID) -> str:
-    return create_session(user_id)
+    return create_session(user_id, email="pat@example.com")
 
 
 def _db_override(existing_user=None):

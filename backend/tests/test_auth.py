@@ -226,9 +226,32 @@ def _valid_auth_token():
     )
 
 
+def _valid_user():
+    return User(id=uuid.uuid4(), email="pat@example.com")
+
+
+def _verify_db_override(auth_token=None, user=None):
+    """Two-execute mock: first call returns auth_token result, second returns user result."""
+    session = AsyncMock()
+
+    auth_result = MagicMock()
+    auth_result.scalar_one_or_none.return_value = auth_token
+
+    user_result = MagicMock()
+    user_result.scalar_one_or_none.return_value = user
+
+    session.execute.side_effect = [auth_result, user_result]
+    session.add = MagicMock()
+
+    async def override():
+        yield session
+
+    return session, override
+
+
 def test_verify_returns_404_for_unknown_token():
     # given
-    _, override = _db_override(existing_user=None)
+    _, override = _verify_db_override(auth_token=None)
     app.dependency_overrides[get_db] = override
 
     # when
@@ -248,7 +271,7 @@ def test_verify_returns_401_for_expired_token():
         expires_at=datetime.now(timezone.utc) - timedelta(hours=1),
         used_at=None,
     )
-    _, override = _db_override(existing_user=expired)
+    _, override = _verify_db_override(auth_token=expired)
     app.dependency_overrides[get_db] = override
 
     # when
@@ -268,7 +291,7 @@ def test_verify_returns_401_for_already_used_token():
         expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
         used_at=datetime.now(timezone.utc) - timedelta(minutes=5),
     )
-    _, override = _db_override(existing_user=used)
+    _, override = _verify_db_override(auth_token=used)
     app.dependency_overrides[get_db] = override
 
     # when
@@ -281,7 +304,7 @@ def test_verify_returns_401_for_already_used_token():
 
 def test_verify_returns_200_with_session_for_valid_token():
     # given
-    _, override = _db_override(existing_user=_valid_auth_token())
+    _, override = _verify_db_override(auth_token=_valid_auth_token(), user=_valid_user())
     app.dependency_overrides[get_db] = override
 
     # when
@@ -296,7 +319,7 @@ def test_verify_returns_200_with_session_for_valid_token():
 def test_verify_marks_token_as_used():
     # given
     auth_token = _valid_auth_token()
-    session, override = _db_override(existing_user=auth_token)
+    session, override = _verify_db_override(auth_token=auth_token, user=_valid_user())
     app.dependency_overrides[get_db] = override
 
     # when
@@ -311,7 +334,7 @@ def test_verify_marks_token_as_used():
 def test_verify_session_has_valid_hmac_signature():
     # given
     auth_token = _valid_auth_token()
-    _, override = _db_override(existing_user=auth_token)
+    _, override = _verify_db_override(auth_token=auth_token, user=_valid_user())
     app.dependency_overrides[get_db] = override
 
     # when
@@ -326,3 +349,4 @@ def test_verify_session_has_valid_hmac_signature():
     assert signature == expected_sig
     payload = base64.urlsafe_b64decode(payload_b64).decode()
     assert str(auth_token.user_id) in payload
+    assert "pat@example.com" in payload

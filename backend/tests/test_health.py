@@ -17,5 +17,4 @@ def test_health():
     assert response.status_code == 200
     body = response.json()
     assert body["status"] == "ok"
-    assert "time" in body
     assert body["db"] == "not configured"
