@@ -36,7 +36,7 @@ Use these names in examples, tests, seed data, and documentation.
 |-------------------------------|-------------|
 | M0 — Planning & Setup         | done        |
 | M1 — Walking Skeleton         | done        |
-| M2 — Pat logs in              | in progress |
+| M2 — Pat logs in              | done        |
 | M3 — UI foundation            | pending     |
 | M4 — Pat sets up his family   | pending     |
 | M5 — Pat logs time            | pending     |
@@ -88,7 +88,7 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - [x] 7. Auth callback — **frontend**: `/auth/callback` page reads `?token=` from search params, calls `GET /auth/verify` server-side, sets HTTP-only `session` cookie (30-day max-age), redirects to `/`. Invalid/expired token redirects to `/login`. Add `SESSION_SECRET` to Vercel env vars (manual). Verify: click magic link → lands on `/` with `session` cookie set.
 - [x] 8. Display name endpoint — **backend**: `PATCH /users/me` saves display_name. Deployable: endpoint works (curl-testable).
 - [x] 9. Auth guard + home page — **frontend + backend**: `GET /auth/verify` adds `email` to session payload; Next.js middleware verifies session cookie (HMAC + expiry), redirects unauthenticated to `/login`; home page shows "Hey! pat@example.com" from the session. Deployable: app is fully gated.
-- [ ] 10. Auth documentation — document the magic link solution in `docs/auth.md`: purpose, full login flow with diagram, auth token (raw vs hash, 1h TTL, single-use), session cookie (HTTP-only, 30-day, HMAC-SHA256 structure), and how `verify_session` validates without a DB call.
+- [x] 10. Auth documentation — document the magic link solution in `docs/auth.md`: purpose, full login flow with diagram, auth token (raw vs hash, 1h TTL, single-use), session cookie (HTTP-only, 30-day, HMAC-SHA256 structure), and how `verify_session` validates without a DB call.
 
 ### M3 — UI foundation
 Establish the visual language before domain features are built on top of it. Intentionally thin — polish the screens that already exist, set the mobile baseline, and stop.

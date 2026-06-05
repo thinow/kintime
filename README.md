@@ -39,7 +39,7 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 |------------------------------|---------------------------------------------------------------------|----------------|
 | **M0 — Planning**            | Project vision, stack, hosting, and collaboration workflow defined. | ✅ done        |
 | **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | ✅ done        |
-| **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | 🔄 in progress |
+| **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | ✅ done        |
 | **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | ⬜ pending     |
 | **M4 — Sets up family**      | Create and edit attached persons. First real domain data.          | ⬜ pending     |
 | **M5 — Logs time**           | Log a time entry against one of the attached persons.              | ⬜ pending     |
@@ -60,10 +60,16 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 **Branching** — push directly to `main`. No feature branches. Tests are the safety net.
 
+**Docs:**
+
+| Document              | What it covers                                                     |
+|-----------------------|--------------------------------------------------------------------|
+| [Auth](docs/auth.md) | Magic link login flow, auth tokens, session cookie, HMAC signing  |
+
 ## License
 
 [MIT](LICENSE) — © 2026 Thierry Nowak
 
 ## Status
 
-M2 in progress — login page live, magic link auth wired end-to-end.
+M2 done — magic link auth complete, app fully gated. Starting M3 (UI foundation).
