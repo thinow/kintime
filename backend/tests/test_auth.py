@@ -198,6 +198,26 @@ def test_request_token_does_not_fail_if_admin_notification_fails(mock_send_admin
     assert response.status_code == 204
 
 
+def test_request_token_evicts_stale_tokens():
+    # given
+    existing = User(id=uuid.uuid4(), email="pat@example.com")
+    session, override = _db_override(existing_user=existing)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/auth/request-token", json={"email": "pat@example.com"})
+
+    # then
+    app.dependency_overrides.clear()
+    from sqlalchemy.sql.dml import Delete
+    delete_calls = [c for c in session.execute.call_args_list if isinstance(c.args[0], Delete)]
+    assert len(delete_calls) == 1
+    stmt_str = str(delete_calls[0].args[0])
+    assert "auth_tokens" in stmt_str
+    assert "expires_at" in stmt_str
+    assert "used_at" in stmt_str
+
+
 def test_request_token_stores_sha256_hash():
     # given
     session, override = _db_override(existing_user=None)

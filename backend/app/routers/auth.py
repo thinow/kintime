@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, EmailStr
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -33,13 +33,20 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
         db.add(user)
         await db.flush()
 
+    now = datetime.now(timezone.utc)
+    await db.execute(
+        delete(AuthToken).where(
+            (AuthToken.expires_at < now) | (AuthToken.used_at.is_not(None))
+        )
+    )
+
     raw_token = secrets.token_urlsafe(32)
     token_hash = hashlib.sha256(raw_token.encode()).hexdigest()
 
     db.add(AuthToken(
         user_id=user.id,
         token_hash=token_hash,
-        expires_at=datetime.now(timezone.utc) + timedelta(hours=1),
+        expires_at=now + timedelta(hours=1),
     ))
 
     send_magic_link_email(to=body.email, token=raw_token)
