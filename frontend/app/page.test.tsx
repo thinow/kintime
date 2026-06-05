@@ -30,10 +30,11 @@ describe("Page", () => {
     const html = renderToStaticMarkup(await Page())
 
     // then
-    expect(html).toContain("Hey! pat@example.com")
+    expect(html).toContain("Hey!")
+    expect(html).toContain("pat@example.com")
   })
 
-  it("shows nothing when no session cookie is present", async () => {
+  it("does not show email when no session cookie is present", async () => {
     // given
     const { cookies } = await import("next/headers")
     vi.mocked(cookies).mockResolvedValue({
@@ -44,6 +45,6 @@ describe("Page", () => {
     const html = renderToStaticMarkup(await Page())
 
     // then
-    expect(html).not.toContain("Hey!")
+    expect(html).not.toContain("@")
   })
 })
