@@ -75,7 +75,6 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 
 - Pat enters his email → backend generates a single-use token (hashed, 1 hour TTL) and emails a login link via Resend
 - Pat clicks the link → token validated, session cookie set (HTTP-only, 1 month), token marked used
-- On first login, Pat is prompted to enter a display name (email remains the identifier)
 - Without a valid session, the app is unreachable
 - Sessions persist across reloads
 
@@ -87,8 +86,9 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - [x] 5. Login page — **frontend**: `/login` page with email form (Server Action calls `POST /auth/request-token`). Deployable: Pat submits his email through the UI and gets a link.
 - [x] 6. Magic link verify + session — **backend**: `GET /auth/verify?token=<raw>`: validate hash, check expiry/used, mark used, return signed session value (HMAC-SHA256 over user_id + expiry). `SESSION_SECRET` added to Fly.io secrets. Backend tests. Verify: `curl "https://kintime-api.fly.dev/auth/verify?token=<raw-from-logs>"` → `200` with session JSON.
 - [x] 7. Auth callback — **frontend**: `/auth/callback` page reads `?token=` from search params, calls `GET /auth/verify` server-side, sets HTTP-only `session` cookie (30-day max-age), redirects to `/`. Invalid/expired token redirects to `/login`. Add `SESSION_SECRET` to Vercel env vars (manual). Verify: click magic link → lands on `/` with `session` cookie set.
-- [ ] 8. Display name endpoint — **backend**: `PATCH /users/me` saves display_name. Deployable: endpoint works (curl-testable).
-- [ ] 9. Auth guard + setup page — **frontend**: middleware redirects unauthenticated requests to `/login`; first-login redirects to `/setup` where Pat enters a display name. Deployable: app is fully gated.
+- [x] 8. Display name endpoint — **backend**: `PATCH /users/me` saves display_name. Deployable: endpoint works (curl-testable).
+- [ ] 9. Auth guard + home page — **frontend + backend**: `GET /auth/verify` adds `email` to session payload; Next.js middleware verifies session cookie (HMAC + expiry), redirects unauthenticated to `/login`; home page shows "Hey! pat@example.com" from the session. Deployable: app is fully gated.
+- [ ] 10. Auth documentation — document the magic link solution in `docs/auth.md`: purpose, full login flow with diagram, auth token (raw vs hash, 1h TTL, single-use), session cookie (HTTP-only, 30-day, HMAC-SHA256 structure), and how `verify_session` validates without a DB call.
 
 ### M3 — UI foundation
 Establish the visual language before domain features are built on top of it. Intentionally thin — polish the screens that already exist, set the mobile baseline, and stop.
