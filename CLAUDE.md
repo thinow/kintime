@@ -37,7 +37,7 @@ Use these names in examples, tests, seed data, and documentation.
 | M0 — Planning & Setup         | done        |
 | M1 — Walking Skeleton         | done        |
 | M2 — Pat logs in              | done        |
-| M3 — UI foundation            | pending     |
+| M3 — UI foundation            | done        |
 | M4 — Pat sets up his family   | pending     |
 | M5 — Pat logs time            | pending     |
 | M6 — Pat sees balance         | pending     |
@@ -90,16 +90,16 @@ Auth mechanism: **magic link** (passwordless). Pat enters his email, receives a 
 - [x] 9. Auth guard + home page — **frontend + backend**: `GET /auth/verify` adds `email` to session payload; Next.js middleware verifies session cookie (HMAC + expiry), redirects unauthenticated to `/login`; home page shows "Hey! pat@example.com" from the session. Deployable: app is fully gated.
 - [x] 10. Auth documentation — document the magic link solution in `docs/auth.md`: purpose, full login flow with diagram, auth token (raw vs hash, 1h TTL, single-use), session cookie (HTTP-only, 30-day, HMAC-SHA256 structure), and how `verify_session` validates without a DB call.
 
-### M3 — UI foundation
+### M3 — UI foundation `done`
 Establish the visual language before domain features are built on top of it. Intentionally thin — polish the screens that already exist, set the mobile baseline, and stop.
 
 - Font, color palette, and spacing established
 - Login, setup, and home screens polished on mobile
 - No component library — just Tailwind conventions the rest of the app follows
 
-- [ ] 1. Tailwind + design tokens — install Tailwind v4, wire up globals.css, pick a font via next/font, define CSS variables for background/foreground/accent/muted. Verify: font loads on `/login` in production, no layout regression.
-- [ ] 2. Login screen polish — mobile-first Tailwind classes on login page and form: centered layout, styled input, styled button, error state. Verify: `/login` on 390px viewport looks intentional.
-- [ ] 3. Home screen polish — mobile-first Tailwind classes on home page: greeting, spacing, typography consistent with login. Verify: log in end-to-end on mobile, design language matches.
+- [x] 1. Tailwind + design tokens — install Tailwind v4, wire up globals.css, pick a font via next/font, define CSS variables for background/foreground/accent/muted. Verify: font loads on `/login` in production, no layout regression.
+- [x] 2. Login screen polish — mobile-first Tailwind classes on login page and form: centered layout, styled input, styled button, error state. Verify: `/login` on 390px viewport looks intentional.
+- [x] 3. Home screen polish — mobile-first Tailwind classes on home page: greeting, spacing, typography consistent with login. Verify: log in end-to-end on mobile, design language matches.
 
 ### M4 — Pat sets up his family
 Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
