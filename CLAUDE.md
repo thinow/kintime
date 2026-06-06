@@ -109,7 +109,7 @@ Pat creates and edits his kin (Casey, Jamie). The first real domain data lands h
 - Entries persist in the existing database
 
 - [ ] 1. Schema — `kin` table migration: `kin` (id UUID PK, user_id FK → users, name VARCHAR NOT NULL, created_at timestamptz). No backend or frontend changes. Verify: Neon console shows `kin` table with correct columns.
-- [ ] 2. Backend — kin CRUD: `GET /kin` (list authed user's kin), `POST /kin` (create), `PATCH /kin/{id}` (rename), `DELETE /kin/{id}` (remove). All endpoints enforce ownership. Tests for all. Verify: curl in production — create Casey, list, rename, delete.
+- [ ] 2. Backend — kin CRUD: `GET /users/me/kin` (list authed user's kin), `POST /users/me/kin` (create), `PATCH /users/me/kin/{id}` (rename), `DELETE /users/me/kin/{id}` (remove). All endpoints enforce ownership. Tests for all. Verify: curl in production — create Casey, list, rename, delete.
 - [ ] 3. Frontend — kin screen: list Pat's kin, add form, inline rename, delete button. Server Actions for all mutations. Verify: add Casey and Jamie in browser → both persist; rename Casey, delete Jamie → changes hold.
 
 ### M5 — Pat logs time
