@@ -17,6 +17,17 @@ vi.mock("next/headers", () => ({
   cookies: vi.fn(),
 }))
 
+vi.mock("./kin/kin-list", () => ({
+  KinList: ({ kin }: { kin: { id: string; name: string }[] }) => (
+    <ul>{kin.map((k) => <li key={k.id}>{k.name}</li>)}</ul>
+  ),
+}))
+
+vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+  ok: true,
+  json: async () => [],
+}))
+
 describe("Page", () => {
   it("shows the user's email when a valid session cookie is present", async () => {
     // given
