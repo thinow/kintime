@@ -38,7 +38,7 @@ Use these names in examples, tests, seed data, and documentation.
 | M1 — Walking Skeleton         | done        |
 | M2 — Pat logs in              | done        |
 | M3 — UI foundation            | done        |
-| M4 — Pat sets up his family   | in progress |
+| M4 — Pat sets up his family   | done        |
 | M5 — Pat logs time            | pending     |
 | M6 — Pat sees balance         | pending     |
 | M7 — UI polish                | pending     |
@@ -101,16 +101,16 @@ Establish the visual language before domain features are built on top of it. Int
 - [x] 2. Login screen polish — mobile-first Tailwind classes on login page and form: centered layout, styled input, styled button, error state. Verify: `/login` on 390px viewport looks intentional.
 - [x] 3. Home screen polish — mobile-first Tailwind classes on home page: greeting, spacing, typography consistent with login. Verify: log in end-to-end on mobile, design language matches.
 
-### M4 — Pat sets up his family `in progress`
+### M4 — Pat sets up his family `done`
 Pat creates and edits his kin (Casey, Jamie). The first real domain data lands here.
 
 - A form to add a kin (name)
 - Edit and remove existing kin
 - Entries persist in the existing database
 
-- [ ] 1. Schema — `kin` table migration: `kin` (id UUID PK, user_id FK → users, name VARCHAR NOT NULL, created_at timestamptz). No backend or frontend changes. Verify: Neon console shows `kin` table with correct columns.
-- [ ] 2. Backend — kin CRUD: `GET /users/me/kin` (list authed user's kin), `POST /users/me/kin` (create), `PATCH /users/me/kin/{id}` (rename), `DELETE /users/me/kin/{id}` (remove). All endpoints enforce ownership. Tests for all. Verify: curl in production — create Casey, list, rename, delete.
-- [ ] 3. Frontend — kin screen: list Pat's kin, add form, inline rename, delete button. Server Actions for all mutations. Verify: add Casey and Jamie in browser → both persist; rename Casey, delete Jamie → changes hold.
+- [x] 1. Schema — `kin` table migration: `kin` (id UUID PK, user_id FK → users, name VARCHAR NOT NULL, created_at timestamptz). No backend or frontend changes. Verify: Neon console shows `kin` table with correct columns.
+- [x] 2. Backend — kin CRUD: `GET /users/me/kin` (list authed user's kin), `POST /users/me/kin` (create), `PATCH /users/me/kin/{id}` (rename), `DELETE /users/me/kin/{id}` (remove). All endpoints enforce ownership. Tests for all. Verify: curl in production — create Casey, list, rename, delete.
+- [x] 3. Frontend — kin screen: list Pat's kin, add form, inline rename, delete button. Server Actions for all mutations. Verify: add Casey and Jamie in browser → both persist; rename Casey, delete Jamie → changes hold.
 
 ### M5 — Pat logs time
 Pat logs time spent with one of his kin.
