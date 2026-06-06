@@ -11,8 +11,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 | Persona | Role |
 |---------|------|
 | Pat     | The user (parent tracking time) |
-| Casey   | Attached person (child) |
-| Jamie   | Attached person (child) |
+| Casey   | Kin (child)                     |
+| Jamie   | Kin (child)                     |
 
 Use these names in examples, tests, seed data, and documentation.
 
@@ -38,7 +38,7 @@ Use these names in examples, tests, seed data, and documentation.
 | M1 — Walking Skeleton         | done        |
 | M2 — Pat logs in              | done        |
 | M3 — UI foundation            | done        |
-| M4 — Pat sets up his family   | pending     |
+| M4 — Pat sets up his family   | in progress |
 | M5 — Pat logs time            | pending     |
 | M6 — Pat sees balance         | pending     |
 | M7 — UI polish                | pending     |
@@ -101,23 +101,27 @@ Establish the visual language before domain features are built on top of it. Int
 - [x] 2. Login screen polish — mobile-first Tailwind classes on login page and form: centered layout, styled input, styled button, error state. Verify: `/login` on 390px viewport looks intentional.
 - [x] 3. Home screen polish — mobile-first Tailwind classes on home page: greeting, spacing, typography consistent with login. Verify: log in end-to-end on mobile, design language matches.
 
-### M4 — Pat sets up his family
-Pat creates and edits his attached persons (Casey, Jamie). The first real domain data lands here.
+### M4 — Pat sets up his family `in progress`
+Pat creates and edits his kin (Casey, Jamie). The first real domain data lands here.
 
-- A form to add an attached person (name)
-- Edit and remove existing persons
+- A form to add a kin (name)
+- Edit and remove existing kin
 - Entries persist in the existing database
 
-### M5 — Pat logs time
-Pat logs time spent with one of his attached persons.
+- [ ] 1. Schema — `kin` table migration: `kin` (id UUID PK, user_id FK → users, name VARCHAR NOT NULL, created_at timestamptz). No backend or frontend changes. Verify: Neon console shows `kin` table with correct columns.
+- [ ] 2. Backend — kin CRUD: `GET /kin` (list authed user's kin), `POST /kin` (create), `PATCH /kin/{id}` (rename), `DELETE /kin/{id}` (remove). All endpoints enforce ownership. Tests for all. Verify: curl in production — create Casey, list, rename, delete.
+- [ ] 3. Frontend — kin screen: list Pat's kin, add form, inline rename, delete button. Server Actions for all mutations. Verify: add Casey and Jamie in browser → both persist; rename Casey, delete Jamie → changes hold.
 
-- A time entry can be logged (attached person + duration + timestamp)
-- The attached person is picked from those Pat set up in M4
+### M5 — Pat logs time
+Pat logs time spent with one of his kin.
+
+- A time entry can be logged (kin + duration + timestamp)
+- The kin is picked from those Pat set up in M4
 
 ### M6 — Pat sees balance
-Pat sees how his time has been distributed across attached persons.
+Pat sees how his time has been distributed across his kin.
 
-- A view shows cumulative time per attached person
+- A view shows cumulative time per kin
 - Computed from logged entries
 
 ### M7 — UI polish
@@ -128,7 +132,7 @@ With all core features built and real data visible, refine the full experience. 
 - Visual hierarchy and spacing aligned across screens
 
 ### M8 — Pat notices imbalance
-Pat is gently surfaced when his time has drifted toward one attached person. This is the core product vision — "spot imbalances before they become patterns."
+Pat is gently surfaced when his time has drifted toward one kin. This is the core product vision — "spot imbalances before they become patterns."
 
 - A visual cue, summary, or notification surfaces imbalance
 - Threshold and tone calibrated to feel honest, not guilt-tripping

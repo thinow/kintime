@@ -41,11 +41,11 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M1 — Walking Skeleton**    | A working page talks to the backend in production. No domain yet.  | ✅ done        |
 | **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | ✅ done        |
 | **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | ✅ done        |
-| **M4 — Sets up family**      | Create and edit attached persons. First real domain data.          | ⬜ pending     |
-| **M5 — Logs time**           | Log a time entry against one of the attached persons.              | ⬜ pending     |
-| **M6 — Sees balance**        | View cumulative time per attached person.                          | ⬜ pending     |
+| **M4 — Sets up family**      | Create and edit kin. First real domain data.                       | 🔄 in progress |
+| **M5 — Logs time**           | Log a time entry against one of Pat's kin.                        | ⬜ pending     |
+| **M6 — Sees balance**        | View cumulative time per kin.                                      | ⬜ pending     |
 | **M7 — UI polish**           | Polish all feature screens once the full loop is built.            | ⬜ pending     |
-| **M8 — Notices imbalance**   | Gentle awareness when time has drifted toward one person.          | ⬜ pending     |
+| **M8 — Notices imbalance**   | Gentle awareness when time has drifted toward one kin.             | ⬜ pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 
