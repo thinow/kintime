@@ -17,15 +17,12 @@ vi.mock("next/headers", () => ({
   cookies: vi.fn(),
 }))
 
-vi.mock("./kin/kin-list", () => ({
-  KinList: ({ kin }: { kin: { id: string; name: string }[] }) => (
-    <ul>{kin.map((k) => <li key={k.id}>{k.name}</li>)}</ul>
-  ),
+vi.mock("./kin/kin-section", () => ({
+  KinSection: () => <div />,
 }))
 
-vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
-  ok: true,
-  json: async () => [],
+vi.mock("./kin/kin-section-skeleton", () => ({
+  KinSectionSkeleton: () => <div />,
 }))
 
 describe("Page", () => {

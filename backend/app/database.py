@@ -31,7 +31,7 @@ def parse_database_url(raw: str) -> tuple[str, dict]:
 
 _url, _connect_args = parse_database_url(os.getenv("DATABASE_URL", ""))
 
-engine: AsyncEngine | None = create_async_engine(_url, connect_args=_connect_args) if _url else None
+engine: AsyncEngine | None = create_async_engine(_url, connect_args=_connect_args, pool_pre_ping=True) if _url else None
 
 _session_factory: async_sessionmaker | None = (
     async_sessionmaker(engine, expire_on_commit=False) if engine else None

@@ -1,7 +1,7 @@
+import { Suspense } from "react"
 import { cookies } from "next/headers"
-import { KinList } from "./kin/kin-list"
-
-type Kin = { id: string; name: string }
+import { KinSection } from "./kin/kin-section"
+import { KinSectionSkeleton } from "./kin/kin-section-skeleton"
 
 function getEmailFromSession(token: string): string | null {
   try {
@@ -13,20 +13,10 @@ function getEmailFromSession(token: string): string | null {
   }
 }
 
-async function fetchKin(session: string): Promise<Kin[]> {
-  const res = await fetch(`${process.env.BACKEND_URL}/users/me/kin`, {
-    headers: { Authorization: `Bearer ${session}` },
-    cache: "no-store",
-  })
-  if (!res.ok) return []
-  return res.json()
-}
-
 export default async function Page() {
   const cookieStore = await cookies()
   const session = cookieStore.get("session")?.value
   const email = session ? getEmailFromSession(session) : null
-  const kin = session ? await fetchKin(session) : []
 
   return (
     <main className="min-h-screen px-6 py-16">
@@ -36,7 +26,11 @@ export default async function Page() {
         </p>
         <h1 className="text-3xl font-bold">Hey!</h1>
         {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
-        <KinList kin={kin} />
+        {session && (
+          <Suspense fallback={<KinSectionSkeleton />}>
+            <KinSection session={session} />
+          </Suspense>
+        )}
       </div>
     </main>
   )
