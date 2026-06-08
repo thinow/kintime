@@ -1,7 +1,5 @@
-import { Suspense } from "react"
 import { cookies } from "next/headers"
 import { KinSection } from "./kin/kin-section"
-import { KinSectionSkeleton } from "./kin/kin-section-skeleton"
 
 function getEmailFromSession(token: string): string | null {
   try {
@@ -26,11 +24,7 @@ export default async function Page() {
         </p>
         <h1 className="text-3xl font-bold">Hey!</h1>
         {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
-        {session && (
-          <Suspense fallback={<KinSectionSkeleton />}>
-            <KinSection session={session} />
-          </Suspense>
-        )}
+        <KinSection />
       </div>
     </main>
   )

@@ -21,10 +21,6 @@ vi.mock("./kin/kin-section", () => ({
   KinSection: () => <div />,
 }))
 
-vi.mock("./kin/kin-section-skeleton", () => ({
-  KinSectionSkeleton: () => <div />,
-}))
-
 describe("Page", () => {
   it("shows the user's email when a valid session cookie is present", async () => {
     // given
