@@ -62,9 +62,10 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 **Docs:**
 
-| Document              | What it covers                                                     |
-|-----------------------|--------------------------------------------------------------------|
-| [Auth](docs/auth.md) | Magic link login flow, auth tokens, session cookie, HMAC signing  |
+| Document                          | What it covers                                                     |
+|-----------------------------------|--------------------------------------------------------------------|
+| [Auth](docs/auth.md)             | Magic link login flow, auth tokens, session cookie, HMAC signing  |
+| [Local dev](docs/local-dev.md)   | Running frontend and backend locally before deploying              |
 
 ## License
 
