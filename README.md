@@ -62,10 +62,11 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 **Docs:**
 
-| Document                          | What it covers                                                     |
-|-----------------------------------|--------------------------------------------------------------------|
-| [Auth](docs/auth.md)             | Magic link login flow, auth tokens, session cookie, HMAC signing  |
-| [Local dev](docs/local-dev.md)   | Running frontend and backend locally before deploying              |
+| Document                          | What it covers                                                                    |
+|-----------------------------------|-----------------------------------------------------------------------------------|
+| [Auth](docs/auth.md)             | Magic link login flow, auth tokens, session cookie, HMAC signing                 |
+| [DNS](docs/dns.md)               | thinow.dev DNS records — Vercel CNAME, Resend email auth (SPF/DKIM/DMARC), ACME |
+| [Local dev](docs/local-dev.md)   | Running frontend and backend locally before deploying                             |
 
 ## License
 
