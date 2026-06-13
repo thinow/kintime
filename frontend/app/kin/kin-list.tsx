@@ -5,16 +5,38 @@ import { addKin, deleteKin, renameKin } from "./actions"
 
 type Kin = { id: string; name: string }
 
-export function KinList({ kin }: { kin: Kin[] }) {
+export function KinList({ kin: initialKin }: { kin: Kin[] }) {
+  const [kin, setKin] = useState<Kin[]>(initialKin)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [, startTransition] = useTransition()
+
+  function handleAdd(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    const form = e.currentTarget
+    const name = (new FormData(form).get("name") as string).trim()
+    startTransition(async () => {
+      const newKin = await addKin(name)
+      setKin((prev) => [...prev, newKin])
+      form.reset()
+    })
+  }
 
   function handleRename(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
+    const id = formData.get("id") as string
+    const name = formData.get("name") as string
     startTransition(async () => {
-      await renameKin(formData)
+      await renameKin(id, name)
+      setKin((prev) => prev.map((k) => (k.id === id ? { ...k, name } : k)))
       setEditingId(null)
+    })
+  }
+
+  function handleDelete(id: string) {
+    startTransition(async () => {
+      await deleteKin(id)
+      setKin((prev) => prev.filter((k) => k.id !== id))
     })
   }
 
@@ -63,22 +85,20 @@ export function KinList({ kin }: { kin: Kin[] }) {
                 >
                   {k.name}
                 </button>
-                <form action={deleteKin}>
-                  <input type="hidden" name="id" value={k.id} />
-                  <button
-                    type="submit"
-                    className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2"
-                  >
-                    Remove
-                  </button>
-                </form>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(k.id)}
+                  className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2"
+                >
+                  Remove
+                </button>
               </div>
             )}
           </li>
         ))}
       </ul>
 
-      <form action={addKin} className="flex gap-2">
+      <form onSubmit={handleAdd} className="flex gap-2">
         <input
           name="name"
           placeholder="Add a name…"
