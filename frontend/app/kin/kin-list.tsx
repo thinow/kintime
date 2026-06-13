@@ -8,7 +8,7 @@ type Kin = { id: string; name: string }
 export function KinList({ kin: initialKin }: { kin: Kin[] }) {
   const [kin, setKin] = useState<Kin[]>(initialKin)
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [, startTransition] = useTransition()
+  const [isPending, startTransition] = useTransition()
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -61,18 +61,21 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
                   defaultValue={k.name}
                   autoFocus
                   required
-                  className="flex-1 px-3 py-2 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base"
+                  disabled={isPending}
+                  className="flex-1 px-3 py-2 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base disabled:opacity-50"
                 />
                 <button
                   type="submit"
-                  className="px-3 py-2 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold"
+                  disabled={isPending}
+                  className="px-3 py-2 rounded-xl bg-[var(--color-accent)] text-white text-sm font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Save
                 </button>
                 <button
                   type="button"
                   onClick={() => setEditingId(null)}
-                  className="px-3 py-2 rounded-xl border border-stone-200 text-[var(--color-muted)] text-sm"
+                  disabled={isPending}
+                  className="px-3 py-2 rounded-xl border border-stone-200 text-[var(--color-muted)] text-sm disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Cancel
                 </button>
@@ -81,14 +84,16 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => setEditingId(k.id)}
-                  className="flex-1 text-left text-base font-medium text-[var(--color-fg)] py-2"
+                  disabled={isPending}
+                  className="flex-1 text-left text-base font-medium text-[var(--color-fg)] py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {k.name}
                 </button>
                 <button
                   type="button"
                   onClick={() => handleDelete(k.id)}
-                  className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2"
+                  disabled={isPending}
+                  className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Remove
                 </button>
@@ -103,11 +108,13 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
           name="name"
           placeholder="Add a name…"
           required
-          className="flex-1 px-4 py-3 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base"
+          disabled={isPending}
+          className="flex-1 px-4 py-3 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] placeholder:text-[var(--color-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base disabled:opacity-50"
         />
         <button
           type="submit"
-          className="px-4 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold active:scale-95 transition-transform"
+          disabled={isPending}
+          className="px-4 py-3 rounded-xl bg-[var(--color-accent)] text-white font-semibold active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:active:scale-100"
         >
           Add
         </button>
