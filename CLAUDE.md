@@ -118,6 +118,10 @@ Pat logs time spent with one of his kin.
 - A time entry can be logged (kin + duration + timestamp)
 - The kin is picked from those Pat set up in M4
 
+- [ ] 1. Schema — `moments` migration: `id UUID PK`, `user_id FK → users`, `kin_id FK → kin`, `duration_minutes INT NOT NULL`, `logged_at timestamptz NOT NULL DEFAULT now()`, `created_at timestamptz NOT NULL DEFAULT now()`. No backend or frontend changes. Verify: Neon console shows `moments` with correct columns and FK constraints.
+- [ ] 2. Backend — `POST /users/me/moments`: body accepts `kin_id` + `duration_minutes` (optional `logged_at`, defaults to now). Validates kin belongs to the authed user. Returns 201 with the created moment. Tests for happy path and ownership violation. Verify: curl in production with Casey's real kin_id → 201 with moment JSON.
+- [ ] 3. Frontend — Log time form: kin dropdown (from existing `GET /users/me/kin`), minutes input, submit via Server Action → `POST /users/me/moments`. Show success confirmation after submit. Verify: log 45 min with Jamie in browser → Neon console shows the row.
+
 ### M6 — Pat sees balance
 Pat sees how his time has been distributed across his kin.
 
