@@ -45,7 +45,6 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M5 — Logs time**           | Log a time entry against one of Pat's kin.                        | ✅ done        |
 | **M6 — Sees balance**        | View cumulative time per kin.                                      | 🔄 in progress |
 | **M7 — UI polish**           | Polish all feature screens once the full loop is built.            | ⬜ pending     |
-| **M8 — Notices imbalance**   | Gentle awareness when time has drifted toward one kin.             | ⬜ pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
 

@@ -42,7 +42,6 @@ Use these names in examples, tests, seed data, and documentation.
 | M5 — Pat logs time            | done        |
 | M6 — Pat sees balance         | in progress |
 | M7 — UI polish                | pending     |
-| M8 — Pat notices imbalance    | pending     |
 
 > When a milestone status changes, update both this table and the Roadmap table in `README.md`.
 
@@ -123,13 +122,10 @@ Pat logs time spent with one of his kin.
 - [x] 3. Frontend — Log time form: kin dropdown (from existing `GET /users/me/kin`), minutes input, submit via Server Action → `POST /users/me/moments`. Show success confirmation after submit. Verify: log 45 min with Jamie in browser → Neon console shows the row.
 
 ### M6 — Pat sees balance `in progress`
-Pat sees how his time has been distributed across his kin.
+Pat sees at a glance who he's been neglecting and by how much. Each kin shows a deficit relative to the most-favored kin — the leader shows 0, everyone else shows how far behind they are. M8 is merged here.
 
-- A view shows cumulative time per kin
-- Computed from logged entries
-
-- [x] 1. Backend — `GET /users/me/balance`: returns `[{kin_id, name, total_minutes}]` for all of the authed user's kin (LEFT JOIN moments, COALESCE 0 for kin with no moments). Tests for kin with moments, kin with no moments, empty kin list. Verify: `curl https://kintime-api.fly.dev/users/me/balance -H "Authorization: Bearer <session>"` → JSON with kin names and totals.
-- [ ] 2. Frontend — Balance view on home page: server-side call to `GET /users/me/balance`, render each kin's name + total time formatted as "1h 30m" or "45m". No chart, no colour coding — just legible numbers. Verify: log 45m with Casey and 90m with Jamie → home page shows correct totals per kin.
+- [ ] 1. Backend (patch) — update `GET /users/me/balance`: drop `total_minutes`, add `deficit_minutes` (leader's total − kin's total, 0 for the leader). Sorted by deficit ascending. Update tests. Verify: `curl https://kintime-api.fly.dev/users/me/balance -H "Authorization: Bearer <session>"` → `[{kin_id, name, deficit_minutes}]` with correct values.
+- [ ] 2. Frontend — Deficit view on home page: server-side call to `GET /users/me/balance`, show each kin's name; for `deficit_minutes > 0` show "Xh Ym behind", for 0 show nothing extra. Verify: log 45m with Casey and 90m with Jamie → Jamie shows "45m behind", Casey shows nothing.
 
 ### M7 — UI polish
 With all core features built and real data visible, refine the full experience. Tighten the mobile layout, improve visual hierarchy, and make the app feel cohesive end-to-end.
@@ -138,12 +134,6 @@ With all core features built and real data visible, refine the full experience. 
 - Mobile experience consistent and cohesive
 - Visual hierarchy and spacing aligned across screens
 
-### M8 — Pat notices imbalance
-Pat is gently surfaced when his time has drifted toward one kin. This is the core product vision — "spot imbalances before they become patterns."
-
-- A visual cue, summary, or notification surfaces imbalance
-- Threshold and tone calibrated to feel honest, not guilt-tripping
-- Flows refined based on real usage from M4-M6
 
 ## Repository Structure
 
