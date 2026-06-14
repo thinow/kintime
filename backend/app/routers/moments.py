@@ -2,7 +2,7 @@ import uuid
 from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -15,7 +15,7 @@ router = APIRouter()
 
 class CreateMomentRequest(BaseModel):
     kin_id: uuid.UUID
-    duration_minutes: int
+    duration_minutes: int = Field(gt=0)
     logged_at: datetime | None = None
 
 

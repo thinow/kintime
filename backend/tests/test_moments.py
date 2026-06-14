@@ -122,6 +122,40 @@ def test_create_moment_persists_to_db():
     db.commit.assert_called_once()
 
 
+def test_create_moment_returns_422_for_zero_duration():
+    # given
+    _, override = _db_returning_kin(kin=_kin())
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.post(
+        "/users/me/moments",
+        json={"kin_id": str(CASEY_ID), "duration_minutes": 0},
+        headers={"Authorization": f"Bearer {_session()}"},
+    )
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 422
+
+
+def test_create_moment_returns_422_for_negative_duration():
+    # given
+    _, override = _db_returning_kin(kin=_kin())
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.post(
+        "/users/me/moments",
+        json={"kin_id": str(CASEY_ID), "duration_minutes": -10},
+        headers={"Authorization": f"Bearer {_session()}"},
+    )
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 422
+
+
 def test_create_moment_accepts_explicit_logged_at():
     # given
     casey = _kin()

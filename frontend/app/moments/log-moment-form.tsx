@@ -68,6 +68,7 @@ export function LogMomentForm() {
             name="kin_id"
             required
             disabled={isPending}
+            onFocus={() => fetchKin().then(setKin).catch(() => {})}
             className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base disabled:opacity-50"
           >
             {kin.map((k) => (
