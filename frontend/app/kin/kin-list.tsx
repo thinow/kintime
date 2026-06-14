@@ -33,7 +33,8 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
     })
   }
 
-  function handleDelete(id: string) {
+  function handleDelete(id: string, name: string) {
+    if (!confirm(`Remove ${name}?`)) return
     startTransition(async () => {
       await deleteKin(id)
       setKin((prev) => prev.filter((k) => k.id !== id))
@@ -91,7 +92,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDelete(k.id)}
+                  onClick={() => handleDelete(k.id, k.name)}
                   disabled={isPending}
                   className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
