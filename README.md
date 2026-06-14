@@ -42,8 +42,8 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M2 — Logs in**             | Magic link auth. The app is fully gated from this point on.        | ✅ done        |
 | **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | ✅ done        |
 | **M4 — Sets up family**      | Create and edit kin. First real domain data.                       | ✅ done        |
-| **M5 — Logs time**           | Log a time entry against one of Pat's kin.                        | 🔄 in progress |
-| **M6 — Sees balance**        | View cumulative time per kin.                                      | ⬜ pending     |
+| **M5 — Logs time**           | Log a time entry against one of Pat's kin.                        | ✅ done        |
+| **M6 — Sees balance**        | View cumulative time per kin.                                      | 🔄 in progress |
 | **M7 — UI polish**           | Polish all feature screens once the full loop is built.            | ⬜ pending     |
 | **M8 — Notices imbalance**   | Gentle awareness when time has drifted toward one kin.             | ⬜ pending     |
 
@@ -74,4 +74,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M5 in progress — logging time with a kin.
+M6 in progress — showing cumulative time per kin.

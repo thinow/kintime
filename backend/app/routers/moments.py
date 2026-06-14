@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
-from sqlalchemy import select
+from sqlalchemy import func, outerjoin, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -26,6 +26,32 @@ class MomentResponse(BaseModel):
     logged_at: datetime
 
     model_config = {"from_attributes": True}
+
+
+class KinBalanceResponse(BaseModel):
+    kin_id: uuid.UUID
+    name: str
+    total_minutes: int
+
+
+@router.get("/users/me/balance", response_model=list[KinBalanceResponse])
+async def get_balance(
+    user_id: uuid.UUID = Depends(get_current_user_id),
+    db: AsyncSession = Depends(get_db),
+):
+    stmt = (
+        select(
+            Kin.id.label("kin_id"),
+            Kin.name,
+            func.coalesce(func.sum(Moment.duration_minutes), 0).label("total_minutes"),
+        )
+        .select_from(outerjoin(Kin, Moment, Kin.id == Moment.kin_id))
+        .where(Kin.user_id == user_id)
+        .group_by(Kin.id, Kin.name)
+        .order_by(Kin.name)
+    )
+    rows = (await db.execute(stmt)).all()
+    return [KinBalanceResponse(kin_id=r.kin_id, name=r.name, total_minutes=r.total_minutes) for r in rows]
 
 
 @router.post("/users/me/moments", response_model=MomentResponse, status_code=201)
