@@ -1,5 +1,6 @@
 import { cookies } from "next/headers"
 import { KinSection } from "./kin/kin-section"
+import { LogMomentForm } from "./moments/log-moment-form"
 
 function getEmailFromSession(token: string): string | null {
   try {
@@ -25,6 +26,7 @@ export default async function Page() {
         <h1 className="text-3xl font-bold">Hey!</h1>
         {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
         <KinSection />
+        <LogMomentForm />
       </div>
     </main>
   )
