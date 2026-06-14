@@ -13,13 +13,14 @@ client = TestClient(app)
 PAT_ID = uuid.uuid4()
 CASEY_ID = uuid.uuid4()
 JAMIE_ID = uuid.uuid4()
+MORGAN_ID = uuid.uuid4()
 
 
 def _session() -> str:
     return create_session(PAT_ID, email="pat@example.com")
 
 
-def _db_returning_balance(rows):
+def _db_returning_totals(rows):
     db = AsyncMock()
     result = MagicMock()
     result.all.return_value = rows
@@ -41,13 +42,13 @@ def test_get_balance_returns_401_without_auth():
     assert response.status_code == 401
 
 
-def test_get_balance_returns_totals_per_kin():
+def test_get_balance_returns_deficit_per_kin():
     # given
     rows = [
         SimpleNamespace(kin_id=CASEY_ID, name="Casey", total_minutes=90),
         SimpleNamespace(kin_id=JAMIE_ID, name="Jamie", total_minutes=45),
     ]
-    app.dependency_overrides[get_db] = _db_returning_balance(rows)
+    app.dependency_overrides[get_db] = _db_returning_totals(rows)
 
     # when
     response = client.get("/users/me/balance", headers={"Authorization": f"Bearer {_session()}"})
@@ -57,16 +58,14 @@ def test_get_balance_returns_totals_per_kin():
     assert response.status_code == 200
     body = response.json()
     assert len(body) == 2
-    assert body[0] == {"kin_id": str(CASEY_ID), "name": "Casey", "total_minutes": 90}
-    assert body[1] == {"kin_id": str(JAMIE_ID), "name": "Jamie", "total_minutes": 45}
+    assert body[0] == {"kin_id": str(CASEY_ID), "name": "Casey", "deficit_minutes": 0}
+    assert body[1] == {"kin_id": str(JAMIE_ID), "name": "Jamie", "deficit_minutes": 45}
 
 
-def test_get_balance_returns_zero_for_kin_with_no_moments():
-    # given
-    rows = [
-        SimpleNamespace(kin_id=CASEY_ID, name="Casey", total_minutes=0),
-    ]
-    app.dependency_overrides[get_db] = _db_returning_balance(rows)
+def test_get_balance_returns_zero_deficit_for_kin_with_no_moments():
+    # given — single kin with no logged time is the leader by default
+    rows = [SimpleNamespace(kin_id=CASEY_ID, name="Casey", total_minutes=0)]
+    app.dependency_overrides[get_db] = _db_returning_totals(rows)
 
     # when
     response = client.get("/users/me/balance", headers={"Authorization": f"Bearer {_session()}"})
@@ -74,12 +73,52 @@ def test_get_balance_returns_zero_for_kin_with_no_moments():
     # then
     app.dependency_overrides.clear()
     assert response.status_code == 200
-    assert response.json()[0]["total_minutes"] == 0
+    assert response.json()[0]["deficit_minutes"] == 0
+
+
+def test_get_balance_returns_results_sorted_by_deficit_ascending():
+    # given
+    rows = [
+        SimpleNamespace(kin_id=JAMIE_ID, name="Jamie", total_minutes=30),
+        SimpleNamespace(kin_id=CASEY_ID, name="Casey", total_minutes=90),
+    ]
+    app.dependency_overrides[get_db] = _db_returning_totals(rows)
+
+    # when
+    response = client.get("/users/me/balance", headers={"Authorization": f"Bearer {_session()}"})
+
+    # then
+    app.dependency_overrides.clear()
+    body = response.json()
+    assert body[0]["deficit_minutes"] == 0   # Casey leads
+    assert body[1]["deficit_minutes"] == 60  # Jamie is 60m behind
+
+
+def test_get_balance_returns_correct_deficits_for_three_kin():
+    # given
+    rows = [
+        SimpleNamespace(kin_id=CASEY_ID,  name="Casey",  total_minutes=120),
+        SimpleNamespace(kin_id=JAMIE_ID,  name="Jamie",  total_minutes=90),
+        SimpleNamespace(kin_id=MORGAN_ID, name="Morgan", total_minutes=60),
+    ]
+    app.dependency_overrides[get_db] = _db_returning_totals(rows)
+
+    # when
+    response = client.get("/users/me/balance", headers={"Authorization": f"Bearer {_session()}"})
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 200
+    body = response.json()
+    assert len(body) == 3
+    assert body[0] == {"kin_id": str(CASEY_ID),  "name": "Casey",  "deficit_minutes": 0}
+    assert body[1] == {"kin_id": str(JAMIE_ID),  "name": "Jamie",  "deficit_minutes": 30}
+    assert body[2] == {"kin_id": str(MORGAN_ID), "name": "Morgan", "deficit_minutes": 60}
 
 
 def test_get_balance_returns_empty_list_when_no_kin():
     # given
-    app.dependency_overrides[get_db] = _db_returning_balance([])
+    app.dependency_overrides[get_db] = _db_returning_totals([])
 
     # when
     response = client.get("/users/me/balance", headers={"Authorization": f"Bearer {_session()}"})

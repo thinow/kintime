@@ -31,7 +31,7 @@ class MomentResponse(BaseModel):
 class KinBalanceResponse(BaseModel):
     kin_id: uuid.UUID
     name: str
-    total_minutes: int
+    deficit_minutes: int
 
 
 @router.get("/users/me/balance", response_model=list[KinBalanceResponse])
@@ -48,10 +48,13 @@ async def get_balance(
         .select_from(outerjoin(Kin, Moment, Kin.id == Moment.kin_id))
         .where(Kin.user_id == user_id)
         .group_by(Kin.id, Kin.name)
-        .order_by(Kin.name)
     )
     rows = (await db.execute(stmt)).all()
-    return [KinBalanceResponse(kin_id=r.kin_id, name=r.name, total_minutes=r.total_minutes) for r in rows]
+    max_total = max((r.total_minutes for r in rows), default=0)
+    return sorted(
+        [KinBalanceResponse(kin_id=r.kin_id, name=r.name, deficit_minutes=max_total - r.total_minutes) for r in rows],
+        key=lambda r: r.deficit_minutes,
+    )
 
 
 @router.post("/users/me/moments", response_model=MomentResponse, status_code=201)

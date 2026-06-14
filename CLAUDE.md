@@ -124,7 +124,7 @@ Pat logs time spent with one of his kin.
 ### M6 — Pat sees balance `in progress`
 Pat sees at a glance who he's been neglecting and by how much. Each kin shows a deficit relative to the most-favored kin — the leader shows 0, everyone else shows how far behind they are. M8 is merged here.
 
-- [ ] 1. Backend (patch) — update `GET /users/me/balance`: drop `total_minutes`, add `deficit_minutes` (leader's total − kin's total, 0 for the leader). Sorted by deficit ascending. Update tests. Verify: `curl https://kintime-api.fly.dev/users/me/balance -H "Authorization: Bearer <session>"` → `[{kin_id, name, deficit_minutes}]` with correct values.
+- [x] 1. Backend (patch) — update `GET /users/me/balance`: drop `total_minutes`, add `deficit_minutes` (leader's total − kin's total, 0 for the leader). Sorted by deficit ascending. Update tests. Verify: `curl https://kintime-api.fly.dev/users/me/balance -H "Authorization: Bearer <session>"` → `[{kin_id, name, deficit_minutes}]` with correct values.
 - [ ] 2. Frontend — Deficit view on home page: server-side call to `GET /users/me/balance`, show each kin's name; for `deficit_minutes > 0` show "Xh Ym behind", for 0 show nothing extra. Verify: log 45m with Casey and 90m with Jamie → Jamie shows "45m behind", Casey shows nothing.
 
 ### M7 — UI polish
