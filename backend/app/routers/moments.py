@@ -24,7 +24,6 @@ class MomentResponse(BaseModel):
     kin_id: uuid.UUID
     duration_minutes: int
     logged_at: datetime
-    created_at: datetime
 
     model_config = {"from_attributes": True}
 
@@ -48,7 +47,6 @@ async def create_moment(
         kin_id=body.kin_id,
         duration_minutes=body.duration_minutes,
         logged_at=body.logged_at or datetime.now(timezone.utc),
-        created_at=datetime.now(timezone.utc),
     )
     db.add(moment)
     await db.commit()
