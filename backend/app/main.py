@@ -10,7 +10,7 @@ logging.getLogger().setLevel(logging.INFO)
 
 logger = logging.getLogger(__name__)
 
-from app.routers import auth, health, kin, moments, users
+from app.routers import auth, health, kin, moments
 
 _REQUIRED_ENV_VARS = ["RESEND_API_KEY", "FRONTEND_URL", "SESSION_SECRET"]
 
@@ -38,6 +38,5 @@ async def db_interface_error_handler(request: Request, exc: InterfaceError) -> J
 
 app.include_router(health.router)
 app.include_router(auth.router)
-app.include_router(users.router)
 app.include_router(kin.router)
 app.include_router(moments.router)
