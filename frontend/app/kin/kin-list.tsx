@@ -8,6 +8,7 @@ type Kin = { id: string; name: string }
 export function KinList({ kin: initialKin }: { kin: Kin[] }) {
   const [kin, setKin] = useState<Kin[]>(initialKin)
   const [editingId, setEditingId] = useState<string | null>(null)
+  const [confirmingId, setConfirmingId] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
   function handleAdd(e: React.FormEvent<HTMLFormElement>) {
@@ -33,11 +34,11 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
     })
   }
 
-  function handleDelete(id: string, name: string) {
-    if (!confirm(`Remove ${name}?`)) return
+  function handleDelete(id: string) {
     startTransition(async () => {
       await deleteKin(id)
       setKin((prev) => prev.filter((k) => k.id !== id))
+      setConfirmingId(null)
     })
   }
 
@@ -81,6 +82,28 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
                   Cancel
                 </button>
               </form>
+            ) : confirmingId === k.id ? (
+              <div className="flex items-center gap-3">
+                <span className="flex-1 text-base font-medium text-[var(--color-fg)] py-2">
+                  Remove {k.name}?
+                </span>
+                <button
+                  type="button"
+                  onClick={() => handleDelete(k.id)}
+                  disabled={isPending}
+                  className="text-sm text-red-500 font-semibold py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Remove
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmingId(null)}
+                  disabled={isPending}
+                  className="text-sm text-[var(--color-muted)] py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Cancel
+                </button>
+              </div>
             ) : (
               <div className="flex items-center gap-3">
                 <button
@@ -92,7 +115,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
                 </button>
                 <button
                   type="button"
-                  onClick={() => handleDelete(k.id, k.name)}
+                  onClick={() => setConfirmingId(k.id)}
                   disabled={isPending}
                   className="text-sm text-[var(--color-muted)] hover:text-red-500 transition-colors py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
