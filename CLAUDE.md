@@ -40,7 +40,7 @@ Use these names in examples, tests, seed data, and documentation.
 | M3 — UI foundation            | done        |
 | M4 — Pat sets up his family   | done        |
 | M5 — Pat logs time            | done        |
-| M6 — Pat sees balance         | in progress |
+| M6 — Pat sees balance         | done        |
 | M7 — UI polish                | pending     |
 
 > When a milestone status changes, update both this table and the Roadmap table in `README.md`.
@@ -121,7 +121,7 @@ Pat logs time spent with one of his kin.
 - [x] 2. Backend — `POST /users/me/moments`: body accepts `kin_id` + `duration_minutes` (optional `logged_at`, defaults to now). Validates kin belongs to the authed user. Returns 201 with the created moment. Tests for happy path and ownership violation. Verify: curl in production with Casey's real kin_id → 201 with moment JSON.
 - [x] 3. Frontend — Log time form: kin dropdown (from existing `GET /users/me/kin`), minutes input, submit via Server Action → `POST /users/me/moments`. Show success confirmation after submit. Verify: log 45 min with Jamie in browser → Neon console shows the row.
 
-### M6 — Pat sees balance `in progress`
+### M6 — Pat sees balance `done`
 Pat sees at a glance who he's been neglecting and by how much. Each kin shows a deficit relative to the most-favored kin — the leader shows 0, everyone else shows how far behind they are. M8 is merged here.
 
 - [x] 1. Backend (patch) — update `GET /users/me/balance`: drop `total_minutes`, add `deficit_minutes` (leader's total − kin's total, 0 for the leader). Sorted by deficit ascending. Update tests. Verify: `curl https://kintime-api.fly.dev/users/me/balance -H "Authorization: Bearer <session>"` → `[{kin_id, name, deficit_minutes}]` with correct values.

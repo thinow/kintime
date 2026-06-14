@@ -43,7 +43,7 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 | **M3 — UI foundation**       | Font, colors, spacing set. Auth screens polished for mobile.       | ✅ done        |
 | **M4 — Sets up family**      | Create and edit kin. First real domain data.                       | ✅ done        |
 | **M5 — Logs time**           | Log a time entry against one of Pat's kin.                        | ✅ done        |
-| **M6 — Sees balance**        | View cumulative time per kin.                                      | 🔄 in progress |
+| **M6 — Sees balance**        | View cumulative time per kin.                                      | ✅ done        |
 | **M7 — UI polish**           | Polish all feature screens once the full loop is built.            | ⬜ pending     |
 
 > No staging environment. Tests run locally and in CI/CD.
@@ -73,4 +73,4 @@ Kintime is openly and transparently co-created with [Claude Code](https://claude
 
 ## Status
 
-M6 in progress — showing cumulative time per kin.
+M7 up next — UI polish.
