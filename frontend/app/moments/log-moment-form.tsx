@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { useEffect, useState, useTransition } from "react"
 import { logMoment } from "./actions"
 
@@ -13,6 +14,7 @@ async function fetchKin(): Promise<Kin[]> {
 }
 
 export function LogMomentForm() {
+  const router = useRouter()
   const [kin, setKin] = useState<Kin[] | null>(null)
   const [state, setState] = useState<State>({ status: "loading" })
   const [isPending, startTransition] = useTransition()
@@ -38,6 +40,7 @@ export function LogMomentForm() {
         await logMoment(kinId, durationMinutes)
         form.reset()
         setState({ status: "success" })
+        router.refresh()
       } catch {
         setState({ status: "error" })
       }

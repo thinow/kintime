@@ -17,6 +17,10 @@ vi.mock("next/headers", () => ({
   cookies: vi.fn(),
 }))
 
+vi.mock("next/navigation", () => ({
+  useRouter: vi.fn(() => ({ refresh: vi.fn() })),
+}))
+
 vi.mock("./kin/kin-section", () => ({
   KinSection: () => <div />,
 }))
