@@ -41,7 +41,7 @@ Use these names in examples, tests, seed data, and documentation.
 | M4 — Pat sets up his family   | done        |
 | M5 — Pat logs time            | done        |
 | M6 — Pat sees balance         | done        |
-| M7 — UI polish                | pending     |
+| M7 — UI polish                | in progress |
 
 > When a milestone status changes, update both this table and the Roadmap table in `README.md`.
 
@@ -128,11 +128,16 @@ Pat sees at a glance who he's been neglecting and by how much. Each kin shows a 
 - [x] 2. Frontend — Deficit view on home page: server-side call to `GET /users/me/balance`, show each kin's name; for `deficit_minutes > 0` show "Xh Ym behind", for 0 show nothing extra. Verify: log 45m with Casey and 90m with Jamie → Jamie shows "45m behind", Casey shows nothing.
 
 ### M7 — UI polish
-With all core features built and real data visible, refine the full experience. Tighten the mobile layout, improve visual hierarchy, and make the app feel cohesive end-to-end.
+With all core features built and real data visible, refine the full experience. Page order follows task frequency: balance first (context), then quick-log (action), then kin management (setup). Page arrives fully server-rendered — no client-side data fetches, no loading skeletons.
 
-- All feature screens refined in context of real data
-- Mobile experience consistent and cohesive
-- Visual hierarchy and spacing aligned across screens
+- Balance shown graphically with relative deficit bars
+- One-tap preset buttons (+15m / +30m / +1h) per kin for fast logging
+- Page section order: balance → quick-log → kin management
+- Page loads fully rendered; no skeleton states
+
+- [ ] 1. Server-render kin + eliminate skeletons — fetch kin list in `page.tsx` alongside balance (parallel server-side), pass both as props. Remove all `useEffect`-based kin fetches from `KinSection` and `LogMomentForm`. Page arrives fully rendered with no loading states. Verify: open home page on a throttled connection — content loads with the HTML, no skeleton flash.
+- [ ] 2. Reorder + quick-log buttons — restructure `page.tsx` to: balance → quick-log → kin management. Replace the dropdown+number form with per-kin preset buttons (+15m / +30m / +1h) as the primary interaction; keep a custom-minutes input below as a secondary option. Buttons are thin client components receiving `kinId` as a prop, calling `logMoment` then `router.refresh()`. Verify: tap +30m on Casey → Neon shows new row, balance section updates without full page reload.
+- [ ] 3. Deficit bars + visual polish — add relative deficit bars to balance cards (bar width = `deficit_minutes / maxDeficit`; amber when deficit < 30min, red above). Tighten spacing, typography, and color use across the whole page; de-emphasize kin management visually. Verify: full mobile walkthrough at 390px — bars are proportional, balance updates after quick-log, page feels cohesive end-to-end.
 
 
 ## Repository Structure
