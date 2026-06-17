@@ -34,7 +34,7 @@ async def list_kin(
     user_id: uuid.UUID = Depends(get_current_user_id),
     db: AsyncSession = Depends(get_db),
 ):
-    result = await db.execute(select(Kin).where(Kin.user_id == user_id))
+    result = await db.execute(select(Kin).where(Kin.user_id == user_id).order_by(Kin.name))
     return result.scalars().all()
 
 
