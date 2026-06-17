@@ -1,32 +1,16 @@
 "use client"
 
 import { useRouter } from "next/navigation"
-import { useEffect, useState, useTransition } from "react"
+import { useState, useTransition } from "react"
 import { logMoment } from "./actions"
 
 type Kin = { id: string; name: string }
-type State = { status: "idle" } | { status: "loading" } | { status: "success" } | { status: "error" }
+type State = { status: "idle" } | { status: "success" } | { status: "error" }
 
-async function fetchKin(): Promise<Kin[]> {
-  const res = await fetch("/api/kin")
-  if (!res.ok) throw new Error(String(res.status))
-  return res.json()
-}
-
-export function LogMomentForm() {
+export function LogMomentForm({ kin }: { kin: Kin[] }) {
   const router = useRouter()
-  const [kin, setKin] = useState<Kin[] | null>(null)
-  const [state, setState] = useState<State>({ status: "loading" })
+  const [state, setState] = useState<State>({ status: "idle" })
   const [isPending, startTransition] = useTransition()
-
-  useEffect(() => {
-    fetchKin()
-      .then((k) => {
-        setKin(k)
-        setState({ status: "idle" })
-      })
-      .catch(() => setState({ status: "error" }))
-  }, [])
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -53,25 +37,20 @@ export function LogMomentForm() {
         Log time
       </p>
 
-      {state.status === "loading" && (
-        <div className="h-[108px] rounded-xl bg-stone-100 animate-pulse" />
-      )}
-
       {state.status === "error" && (
         <p className="text-sm text-red-500">Something went wrong. Please refresh.</p>
       )}
 
-      {kin !== null && state.status !== "error" && kin.length === 0 && (
+      {kin.length === 0 && (
         <p className="text-sm text-[var(--color-muted)]">Add some kin above before logging time.</p>
       )}
 
-      {kin !== null && kin.length > 0 && state.status !== "error" && (
+      {kin.length > 0 && (
         <form onSubmit={handleSubmit} className="space-y-3">
           <select
             name="kin_id"
             required
             disabled={isPending}
-            onFocus={() => fetchKin().then(setKin).catch(() => {})}
             className="w-full px-4 py-3 rounded-xl border border-stone-200 bg-white text-[var(--color-fg)] focus:outline-none focus:ring-2 focus:ring-[var(--color-accent)] text-base disabled:opacity-50"
           >
             {kin.map((k) => (
