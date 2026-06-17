@@ -43,7 +43,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
   }
 
   return (
-    <div className="mt-10">
+    <div className="mt-10 opacity-75">
       <p className="text-xs font-semibold tracking-widest uppercase text-[var(--color-muted)] mb-4">
         Your kin
       </p>
@@ -109,7 +109,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
                 <button
                   onClick={() => setEditingId(k.id)}
                   disabled={isPending}
-                  className="flex-1 text-left text-base font-medium text-[var(--color-fg)] py-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex-1 text-left text-sm font-medium text-[var(--color-fg)] py-1.5 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {k.name}
                 </button>
