@@ -1,7 +1,7 @@
 import { cookies } from "next/headers"
 import { BalanceSection } from "./balance/balance-section"
+import { QuickLogSection } from "./moments/log-moment-form"
 import { KinSection } from "./kin/kin-section"
-import { LogMomentForm } from "./moments/log-moment-form"
 
 type KinBalance = { kin_id: string; name: string; deficit_minutes: number }
 type Kin = { id: string; name: string }
@@ -57,8 +57,8 @@ export default async function Page() {
         <h1 className="text-3xl font-bold">Hey!</h1>
         {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
         <BalanceSection balance={balance} />
+        <QuickLogSection kin={kin} />
         <KinSection kin={kin} />
-        <LogMomentForm kin={kin} />
       </div>
     </main>
   )
