@@ -31,14 +31,14 @@ export function BalanceSection({ balance }: { balance: KinBalance[] }) {
                 <span className="text-sm text-[var(--color-muted)]">{formatDeficit(k.deficit_minutes)}</span>
               )}
             </div>
-            {k.deficit_minutes > 0 && maxDeficit > 0 && (
-              <div className="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+            <div className="h-1.5 w-full bg-stone-100 rounded-full overflow-hidden">
+              {k.deficit_minutes > 0 && maxDeficit > 0 && (
                 <div
                   className={`h-full rounded-full ${barColor(k.deficit_minutes)}`}
                   style={{ width: `${(k.deficit_minutes / maxDeficit) * 100}%` }}
                 />
-              </div>
-            )}
+              )}
+            </div>
           </li>
         ))}
       </ul>

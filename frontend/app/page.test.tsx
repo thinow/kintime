@@ -21,12 +21,8 @@ vi.mock("next/navigation", () => ({
   useRouter: vi.fn(() => ({ refresh: vi.fn() })),
 }))
 
-vi.mock("./kin/kin-section", () => ({
-  KinSection: () => <div />,
-}))
-
 describe("Page", () => {
-  it("shows the user's email when a valid session cookie is present", async () => {
+  it("shows the username when a valid session cookie is present", async () => {
     // given
     const { cookies } = await import("next/headers")
     vi.mocked(cookies).mockResolvedValue({
@@ -38,8 +34,7 @@ describe("Page", () => {
     const html = renderToStaticMarkup(await Page())
 
     // then
-    expect(html).toContain("Hey!")
-    expect(html).toContain("pat@example.com")
+    expect(html).toContain("pat")
   })
 
   it("does not show email when no session cookie is present", async () => {

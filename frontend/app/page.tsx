@@ -51,11 +51,14 @@ export default async function Page() {
   return (
     <main className="min-h-screen px-6 py-16">
       <div className="max-w-sm mx-auto">
-        <p className="text-xs font-semibold tracking-widest uppercase text-[var(--color-muted)] mb-8">
-          Kintime
-        </p>
-        <h1 className="text-3xl font-bold">Hey!</h1>
-        {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
+        <div className="flex items-center justify-between mb-8">
+          <p className="text-xs font-semibold tracking-widest uppercase text-[var(--color-muted)]">
+            Kintime
+          </p>
+          {email && (
+            <p className="text-xs text-[var(--color-muted)]">{email.split("@")[0]}</p>
+          )}
+        </div>
         <BalanceSection balance={balance} />
         <QuickLogSection kin={kin} />
         <div className="mt-10">
