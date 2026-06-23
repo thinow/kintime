@@ -1,7 +1,7 @@
 import { cookies } from "next/headers"
+import Link from "next/link"
 import { BalanceSection } from "./balance/balance-section"
 import { QuickLogSection } from "./moments/log-moment-form"
-import { KinSection } from "./kin/kin-section"
 
 type KinBalance = { kin_id: string; name: string; deficit_minutes: number }
 type Kin = { id: string; name: string }
@@ -58,7 +58,14 @@ export default async function Page() {
         {email && <p className="mt-1 text-[var(--color-muted)]">{email}</p>}
         <BalanceSection balance={balance} />
         <QuickLogSection kin={kin} />
-        <KinSection kin={kin} />
+        <div className="mt-10">
+          <Link
+            href="/kin"
+            className="text-xs font-semibold tracking-widest uppercase text-[var(--color-muted)] hover:text-[var(--color-fg)] transition-colors"
+          >
+            Manage kin →
+          </Link>
+        </div>
       </div>
     </main>
   )
