@@ -53,7 +53,7 @@ async def get_balance(
     max_total = max((r.total_minutes for r in rows), default=0)
     return sorted(
         [KinBalanceResponse(kin_id=r.kin_id, name=r.name, deficit_minutes=max_total - r.total_minutes) for r in rows],
-        key=lambda r: r.deficit_minutes,
+        key=lambda r: r.name,
     )
 
 

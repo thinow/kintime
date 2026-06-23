@@ -76,11 +76,11 @@ def test_get_balance_returns_zero_deficit_for_kin_with_no_moments():
     assert response.json()[0]["deficit_minutes"] == 0
 
 
-def test_get_balance_returns_results_sorted_by_deficit_ascending():
-    # given
+def test_get_balance_returns_results_sorted_by_name():
+    # given — Morgan leads (most time), but Casey sorts first alphabetically
     rows = [
-        SimpleNamespace(kin_id=JAMIE_ID, name="Jamie", total_minutes=30),
-        SimpleNamespace(kin_id=CASEY_ID, name="Casey", total_minutes=90),
+        SimpleNamespace(kin_id=MORGAN_ID, name="Morgan", total_minutes=90),
+        SimpleNamespace(kin_id=CASEY_ID,  name="Casey",  total_minutes=30),
     ]
     app.dependency_overrides[get_db] = _db_returning_totals(rows)
 
@@ -90,8 +90,8 @@ def test_get_balance_returns_results_sorted_by_deficit_ascending():
     # then
     app.dependency_overrides.clear()
     body = response.json()
-    assert body[0]["deficit_minutes"] == 0   # Casey leads
-    assert body[1]["deficit_minutes"] == 60  # Jamie is 60m behind
+    assert body[0]["name"] == "Casey"   # alphabetically first, despite higher deficit
+    assert body[1]["name"] == "Morgan"
 
 
 def test_get_balance_returns_correct_deficits_for_three_kin():
