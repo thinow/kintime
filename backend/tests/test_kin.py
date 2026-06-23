@@ -35,6 +35,7 @@ def _db_returning_list(items: list):
     db = AsyncMock()
     db.add = MagicMock()
     result = MagicMock()
+    result.all.return_value = []  # for baseline query in create_kin
     result.scalars.return_value.all.return_value = items
     db.execute.return_value = result
 
@@ -44,11 +45,12 @@ def _db_returning_list(items: list):
     return db, override
 
 
-def _kin(owner_id=PAT_ID, name="Casey") -> SimpleNamespace:
+def _kin(owner_id=PAT_ID, name="Casey", baseline_minutes=0) -> SimpleNamespace:
     return SimpleNamespace(
         id=uuid.uuid4(),
         user_id=owner_id,
         name=name,
+        baseline_minutes=baseline_minutes,
         created_at=datetime.now(timezone.utc),
     )
 
@@ -257,3 +259,44 @@ def test_delete_kin_returns_204_and_removes_from_db():
     assert response.status_code == 204
     db.delete.assert_called_once_with(casey)
     db.commit.assert_called_once()
+
+
+# --- baseline_minutes ---
+
+def test_create_kin_sets_baseline_to_current_leader_total():
+    # given — Casey has 90 minutes logged (the leader)
+    db = AsyncMock()
+    db.add = MagicMock()
+    result = MagicMock()
+    result.all.return_value = [
+        SimpleNamespace(total_minutes=90),  # Casey
+        SimpleNamespace(total_minutes=60),  # Jamie
+    ]
+    db.execute.return_value = result
+
+    async def override():
+        yield db
+
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/users/me/kin", json={"name": "Morgan"}, headers={"Authorization": f"Bearer {_session()}"})
+
+    # then
+    app.dependency_overrides.clear()
+    created_kin = db.add.call_args[0][0]
+    assert created_kin.baseline_minutes == 90
+
+
+def test_create_kin_sets_baseline_to_zero_when_no_existing_kin():
+    # given — Pat's first kin, no existing moments
+    db, override = _db_returning_list([])
+    app.dependency_overrides[get_db] = override
+
+    # when
+    client.post("/users/me/kin", json={"name": "Casey"}, headers={"Authorization": f"Bearer {_session()}"})
+
+    # then
+    app.dependency_overrides.clear()
+    created_kin = db.add.call_args[0][0]
+    assert created_kin.baseline_minutes == 0

@@ -43,16 +43,21 @@ async def get_balance(
         select(
             Kin.id.label("kin_id"),
             Kin.name,
+            Kin.baseline_minutes,
             func.coalesce(func.sum(Moment.duration_minutes), 0).label("total_minutes"),
         )
         .select_from(outerjoin(Kin, Moment, Kin.id == Moment.kin_id))
         .where(Kin.user_id == user_id)
-        .group_by(Kin.id, Kin.name)
+        .group_by(Kin.id, Kin.name, Kin.baseline_minutes)
     )
     rows = (await db.execute(stmt)).all()
-    max_total = max((r.total_minutes for r in rows), default=0)
+    max_effective = max((r.total_minutes + r.baseline_minutes for r in rows), default=0)
     return sorted(
-        [KinBalanceResponse(kin_id=r.kin_id, name=r.name, deficit_minutes=max_total - r.total_minutes) for r in rows],
+        [KinBalanceResponse(
+            kin_id=r.kin_id,
+            name=r.name,
+            deficit_minutes=max_effective - (r.total_minutes + r.baseline_minutes),
+        ) for r in rows],
         key=lambda r: r.name,
     )
 
