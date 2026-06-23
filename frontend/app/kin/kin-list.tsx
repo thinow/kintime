@@ -5,6 +5,10 @@ import { addKin, deleteKin, renameKin } from "./actions"
 
 type Kin = { id: string; name: string }
 
+function sorted(kin: Kin[]): Kin[] {
+  return [...kin].sort((a, b) => a.name.localeCompare(b.name))
+}
+
 export function KinList({ kin: initialKin }: { kin: Kin[] }) {
   const [kin, setKin] = useState<Kin[]>(initialKin)
   const [editingId, setEditingId] = useState<string | null>(null)
@@ -17,7 +21,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
     const name = (new FormData(form).get("name") as string).trim()
     startTransition(async () => {
       const newKin = await addKin(name)
-      setKin((prev) => [...prev, newKin])
+      setKin((prev) => sorted([...prev, newKin]))
       form.reset()
     })
   }
@@ -29,7 +33,7 @@ export function KinList({ kin: initialKin }: { kin: Kin[] }) {
     const name = formData.get("name") as string
     startTransition(async () => {
       await renameKin(id, name)
-      setKin((prev) => prev.map((k) => (k.id === id ? { ...k, name } : k)))
+      setKin((prev) => sorted(prev.map((k) => (k.id === id ? { ...k, name } : k))))
       setEditingId(null)
     })
   }
