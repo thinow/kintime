@@ -2,6 +2,7 @@ import { cookies } from "next/headers"
 import Link from "next/link"
 import { BalanceSection } from "./balance/balance-section"
 import { QuickLogSection } from "./moments/log-moment-form"
+import { UserChip } from "./user-chip"
 
 type KinBalance = { kin_id: string; name: string; deficit_minutes: number }
 type Kin = { id: string; name: string }
@@ -52,12 +53,10 @@ export default async function Page() {
     <main className="min-h-screen px-6 py-16">
       <div className="max-w-sm mx-auto">
         <div className="flex items-center justify-between mb-8">
-          <p className="text-xs font-semibold tracking-widest uppercase text-[var(--color-muted)]">
+          <p className="text-lg font-bold tracking-widest uppercase">
             Kintime
           </p>
-          {email && (
-            <p className="text-xs text-[var(--color-muted)]">{email.split("@")[0]}</p>
-          )}
+          {email && <UserChip username={email.split("@")[0]} />}
         </div>
         <BalanceSection balance={balance} />
         <QuickLogSection kin={kin} />
