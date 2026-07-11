@@ -1,20 +1,7 @@
 import { cookies } from "next/headers"
 import Link from "next/link"
 import { CustomLogForm } from "./custom-log-form"
-
-type Kin = { id: string; name: string }
-
-async function fetchKin(session: string): Promise<Kin[]> {
-  try {
-    const res = await fetch(`${process.env.BACKEND_URL}/users/me/kin`, {
-      headers: { Authorization: `Bearer ${session}` },
-    })
-    if (!res.ok) return []
-    return res.json()
-  } catch {
-    return []
-  }
-}
+import { fetchKin } from "../fetch-kin"
 
 export default async function LogPage() {
   const cookieStore = await cookies()

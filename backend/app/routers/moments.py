@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
 from app.models import Kin, Moment
-from app.routers.users import get_current_user_id
+from app.routers.deps import get_current_user_id
 
 router = APIRouter()
 

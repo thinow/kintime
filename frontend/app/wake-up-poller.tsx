@@ -13,7 +13,6 @@ export function WakeUpPoller() {
       try {
         const res = await fetch("/api/health")
         if (res.ok) {
-          console.log("backend awake, refreshing page")
           clearInterval(interval)
           router.refresh()
           return true
@@ -21,7 +20,6 @@ export function WakeUpPoller() {
       } catch {
         // ignore, will retry
       }
-      console.log("backend still sleeping, retrying in 2s…")
       return false
     }
 
