@@ -11,7 +11,7 @@ The natural Next.js tool for this is `loading.tsx`: place a skeleton file next t
 The home page uses two modes depending on whether the backend is awake:
 
 ### Warm backend (normal path)
-`page.tsx` fetches balance and kin data server-side (with a 3-second timeout). If the backend responds in time, the page is fully server-rendered and delivered in one round-trip. No client-side fetching involved.
+`page.tsx` fetches balance and kin data server-side (with a 2-second timeout). If the backend responds in time, the page is fully server-rendered and delivered in one round-trip. No client-side fetching involved.
 
 ### Sleeping backend (cold-start path)
 If the fetch times out (backend is sleeping), `page.tsx` responds immediately with:
@@ -19,9 +19,9 @@ If the fetch times out (backend is sleeping), `page.tsx` responds immediately wi
 - An animated skeleton in place of the data sections
 - A `<WakeUpPoller />` client component (renders nothing, just runs a timer)
 
-`WakeUpPoller` polls `GET /api/health` every 2 seconds. That Route Handler pings the backend's own `/health` endpoint (with a 5-second timeout) and returns 200 when the backend is ready, 503 while it's still waking.
+`WakeUpPoller` fires a first health check immediately on mount, then retries every 2 seconds until it succeeds. Each check calls `GET /api/health`, a Route Handler that pings the backend's `/health` endpoint (with a 5-second timeout) and returns 200 when ready, 503 while still waking.
 
-Once `WakeUpPoller` receives a 200, it calls `router.refresh()`. This triggers Next.js to re-run the server components — this time the backend is warm, the 3-second fetch succeeds, and the page re-renders fully server-side with real data.
+Once `WakeUpPoller` receives a 200, it calls `router.refresh()`. This triggers Next.js to re-run the server components — this time the backend is warm, the 2-second fetch succeeds, and the page re-renders fully server-side with real data.
 
 ### Warm backend
 
@@ -50,12 +50,21 @@ sequenceDiagram
     Note over V,F: timeout — backend sleeping
     V-->>B: HTML shell + skeleton + WakeUpPoller
 
-    loop every 2s
-        B->>V: GET /api/health
-        V->>F: GET /health (5s timeout)
-        alt still waking
-            V-->>B: 503
-        else awake
+    B->>V: GET /api/health (immediate, on mount)
+    V->>F: GET /health (5s timeout)
+    alt awake already
+        F-->>V: 200 ok
+        V-->>B: 200 ok
+        Note over B: router.refresh()
+        B->>V: GET /
+        V->>F: GET /balance + /kin
+        F-->>V: 200 data
+        V-->>B: Full server-rendered HTML
+    else still waking
+        V-->>B: 503
+        loop every 2s until 200
+            B->>V: GET /api/health
+            V->>F: GET /health (5s timeout)
             F-->>V: 200 ok
             V-->>B: 200 ok
             Note over B: router.refresh()

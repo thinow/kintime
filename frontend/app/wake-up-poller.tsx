@@ -7,20 +7,31 @@ export function WakeUpPoller() {
   const router = useRouter()
 
   useEffect(() => {
-    const poll = setInterval(async () => {
+    let interval: ReturnType<typeof setInterval>
+
+    async function check() {
       try {
         const res = await fetch("/api/health")
         if (res.ok) {
           console.log("backend awake, refreshing page")
-          clearInterval(poll)
+          clearInterval(interval)
           router.refresh()
+          return true
         }
       } catch {
-        console.log("backend still sleeping, retrying in 2s…")
+        // ignore, will retry
       }
-    }, 2000)
+      console.log("backend still sleeping, retrying in 2s…")
+      return false
+    }
 
-    return () => clearInterval(poll)
+    check().then((awake) => {
+      if (!awake) {
+        interval = setInterval(check, 2000)
+      }
+    })
+
+    return () => clearInterval(interval)
   }, [router])
 
   return null
