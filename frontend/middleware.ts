@@ -40,7 +40,7 @@ async function isValidSession(token: string): Promise<boolean> {
   }
 }
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   if (PUBLIC_PATHS.some((p) => pathname.startsWith(p))) {

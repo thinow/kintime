@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 from app.routers import auth, health, kin, moments
 
-_REQUIRED_ENV_VARS = ["RESEND_API_KEY", "FRONTEND_URL", "SESSION_SECRET"]
+_REQUIRED_ENV_VARS = ["DATABASE_URL", "RESEND_API_KEY", "FRONTEND_URL", "SESSION_SECRET"]
 
 
 @asynccontextmanager
