@@ -126,7 +126,7 @@ def test_request_token_skips_flush_when_user_already_exists():
     session.flush.assert_not_called()
 
 
-def test_request_token_rolls_back_if_email_fails(mock_send_magic_link_email):
+def test_request_token_commits_before_sending_email(mock_send_magic_link_email):
     # given
     session, override = _db_override(existing_user=None)
     app.dependency_overrides[get_db] = override
@@ -136,9 +136,9 @@ def test_request_token_rolls_back_if_email_fails(mock_send_magic_link_email):
     with pytest.raises(Exception):
         client.post("/auth/request-token", json={"email": "pat@example.com"})
 
-    # then
+    # then — token is committed even when email fails; user can request a new one
     app.dependency_overrides.clear()
-    session.commit.assert_not_called()
+    session.commit.assert_called_once()
 
 
 def test_request_token_sends_magic_link_email(mock_send_magic_link_email):

@@ -49,8 +49,8 @@ async def request_token(body: TokenRequest, db: AsyncSession = Depends(get_db)):
         expires_at=now + timedelta(hours=1),
     ))
 
-    send_magic_link_email(to=body.email, token=raw_token)
     await db.commit()
+    send_magic_link_email(to=body.email, token=raw_token)
 
     if is_new_user:
         try:

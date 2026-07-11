@@ -16,22 +16,25 @@ export async function addKin(name: string): Promise<Kin> {
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${session}` },
     body: JSON.stringify({ name }),
   })
+  if (!res.ok) throw new Error(`Failed to add kin: ${res.status}`)
   return res.json()
 }
 
 export async function renameKin(id: string, name: string): Promise<void> {
   const session = await getSession()
-  await fetch(`${process.env.BACKEND_URL}/users/me/kin/${id}`, {
+  const res = await fetch(`${process.env.BACKEND_URL}/users/me/kin/${id}`, {
     method: "PATCH",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${session}` },
     body: JSON.stringify({ name }),
   })
+  if (!res.ok) throw new Error(`Failed to rename kin: ${res.status}`)
 }
 
 export async function deleteKin(id: string): Promise<void> {
   const session = await getSession()
-  await fetch(`${process.env.BACKEND_URL}/users/me/kin/${id}`, {
+  const res = await fetch(`${process.env.BACKEND_URL}/users/me/kin/${id}`, {
     method: "DELETE",
     headers: { Authorization: `Bearer ${session}` },
   })
+  if (!res.ok) throw new Error(`Failed to delete kin: ${res.status}`)
 }
