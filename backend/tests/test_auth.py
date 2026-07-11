@@ -351,6 +351,19 @@ def test_verify_marks_token_as_used():
     session.commit.assert_called_once()
 
 
+def test_verify_returns_500_when_user_not_found():
+    # given — valid, unused, non-expired token but the user row is missing
+    _, override = _verify_db_override(auth_token=_valid_auth_token(), user=None)
+    app.dependency_overrides[get_db] = override
+
+    # when
+    response = client.get("/auth/verify?token=some-token")
+
+    # then
+    app.dependency_overrides.clear()
+    assert response.status_code == 500
+
+
 def test_verify_session_has_valid_hmac_signature():
     # given
     auth_token = _valid_auth_token()
